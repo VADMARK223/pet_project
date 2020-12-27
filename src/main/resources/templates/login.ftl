@@ -1,5 +1,5 @@
 <#include "base.ftl">
-<#-- @ftlvariable name="user" type="ru.vadmark.petproject2.model.User" -->
+<#-- @ftlvariable name="user" type="ru.vadmark.petproject.model.User" -->
 
 <#macro page_head>
     <title>Index</title>
@@ -10,9 +10,9 @@
         Hello, ${user.username}.
     <#else>
         <form action="/login" method="post">
-            <#--<#if error??>
+            <#if error??>
                 <p style="color: red">${error}</p>
-            </#if>-->
+            </#if>
 
             <table>
                 <tr>

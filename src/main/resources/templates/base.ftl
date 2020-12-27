@@ -1,3 +1,4 @@
+<#import "/spring.ftl" as spring />
 <#macro page_head>
     <title>Base</title>
 </#macro>

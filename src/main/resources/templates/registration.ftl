@@ -1,6 +1,5 @@
 <#-- @ftlvariable name="error" type="java.lang.String" -->
 <#include "base.ftl">
-<#import "/spring.ftl" as spring />
 
 <#macro page_head>
     <title>Registration</title>
