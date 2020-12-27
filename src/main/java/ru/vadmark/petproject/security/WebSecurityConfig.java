@@ -27,7 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().loginPage("/login").defaultSuccessUrl("/").permitAll()
                 .and()
 
-                .logout().permitAll();
+                .logout().logoutSuccessUrl("/").permitAll();
     }
 
     @Bean
