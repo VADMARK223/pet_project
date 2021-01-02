@@ -6,7 +6,7 @@
 
 <#macro page_body>
     <#list users as user>
-        <h2 class="hello-title">User: ${user.username}.</h2>
+        <h2 class="hello-title">User: №${user.id} ${user.username}</h2>
     </#list>
 </#macro>
 
