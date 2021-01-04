@@ -26,8 +26,8 @@ public class PetWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapte
         http
                 .httpBasic().disable()
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
                 .authorizeRequests()
                 .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/", "/favicon.ico","/images/**", "/css/**").permitAll()

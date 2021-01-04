@@ -22,8 +22,6 @@ public class PetUserDetailsService implements UserDetailsService {
 
     @Override
     public PetUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("Username: {}.", username);
-
         UserEntity user = userRepository.findByUsername(username);
 
         if (user == null) {

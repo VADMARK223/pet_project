@@ -34,7 +34,6 @@ public class JwtFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String token = getTokenFromRequest((HttpServletRequest) request);
-        log.info("token: {}.", token);
         if (token != null && jwtProvider.validateToken(token)) {
             String username = jwtProvider.getUsernameFromToken(token);
             PetUserDetails customUserDetails = petUserDetailsService.loadUserByUsername(username);
