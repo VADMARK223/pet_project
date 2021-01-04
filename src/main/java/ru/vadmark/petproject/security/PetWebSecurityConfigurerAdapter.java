@@ -28,6 +28,9 @@ public class PetWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapte
                 .and()
 
                 .logout().logoutSuccessUrl("/").permitAll();
+
+
+        
     }
 
     @Bean
