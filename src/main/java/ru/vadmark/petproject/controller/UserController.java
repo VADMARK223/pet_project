@@ -6,8 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import ru.vadmark.petproject.dao.UserRepository;
-import ru.vadmark.petproject.model.User;
+import ru.vadmark.petproject.entity.UserEntity;
+import ru.vadmark.petproject.repository.UserEntityRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,19 +21,19 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 public class UserController {
-    private final UserRepository userRepository;
+    private final UserEntityRepository userRepository;
 
     @GetMapping("/users")
     public String getUsers(Model model) {
-        ArrayList<User> users = userRepository.findAll();
+        ArrayList<UserEntity> users = userRepository.findAll();
         model.addAttribute("users", users);
         return "users";
     }
 
     @GetMapping("/users/{id}")
     public String getUser(@PathVariable int id, Model model) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        List<User> users = new ArrayList<>();
+        Optional<UserEntity> optionalUser = userRepository.findById(id);
+        List<UserEntity> users = new ArrayList<>();
         optionalUser.ifPresent(users::add);
         model.addAttribute("users", users);
         return "users";

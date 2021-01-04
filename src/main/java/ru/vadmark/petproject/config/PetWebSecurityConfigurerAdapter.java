@@ -1,4 +1,4 @@
-package ru.vadmark.petproject.security;
+package ru.vadmark.petproject.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

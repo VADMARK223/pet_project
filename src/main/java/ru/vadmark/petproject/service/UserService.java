@@ -10,12 +10,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.vadmark.petproject.dao.UserRepository;
-import ru.vadmark.petproject.model.Role;
-import ru.vadmark.petproject.model.User;
+import ru.vadmark.petproject.entity.RoleEntity;
+import ru.vadmark.petproject.entity.UserEntity;
 import ru.vadmark.petproject.model.UserForm;
-
-import java.util.Collections;
+import ru.vadmark.petproject.repository.RoleEntityRepository;
+import ru.vadmark.petproject.repository.UserEntityRepository;
 
 /**
  * Author: Markitanov Vadim
@@ -25,20 +24,22 @@ import java.util.Collections;
 @Slf4j
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
-    private final UserRepository userRepository;
+    public static final String ROLE_USER = "ROLE_USER";
+    private final UserEntityRepository userRepository;
+    private final RoleEntityRepository roleEntityRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("Username: {}.", username);
 
-        User user = userRepository.findByUsername(username);
+        UserEntity user = userRepository.findByUsername(username);
 
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
 
-        return user;
+        return PetUserDetails.fromUserEntity(user);
     }
 
     public boolean saveUser(UserForm userForm) {
@@ -46,14 +47,22 @@ public class UserService implements UserDetailsService {
             return false;
         }
 
-        User user = new User();
+        UserEntity user = new UserEntity();
         user.setUsername(userForm.getName());
 
-        user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
+        RoleEntity roleEntity = roleEntityRepository.findByName(ROLE_USER);
+        if (roleEntity == null) {
+            log.error("Role '{}' not exists.", ROLE_USER);
+            throw new RuntimeException("Role '" + ROLE_USER + "' not found.");
+        }
+        user.getRoles().add(roleEntity);
         user.setPassword(bCryptPasswordEncoder.encode(userForm.getPassword()));
         userRepository.save(user);
         log.info("Save user.");
-        Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+
+        // Auto login
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user, null,
+                PetUserDetails.fromUserEntity(user).getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return true;
