@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.vadmark.petproject.config.jwt.JwtFilter;
@@ -30,7 +29,7 @@ public class PetWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapte
 //                .and()
                 .authorizeRequests()
                 .antMatchers("/admin").hasRole("ADMIN")
-                .antMatchers("/", "/favicon.ico","/images/**", "/css/**").permitAll()
+                .antMatchers("/", "/favicon.ico", "/images/**", "/css/**").permitAll()
                 .antMatchers("/registration").not().fullyAuthenticated()
                 .anyRequest().authenticated()
                 .and()

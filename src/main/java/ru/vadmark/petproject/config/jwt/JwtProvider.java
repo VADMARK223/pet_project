@@ -35,10 +35,8 @@ public class JwtProvider {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
         } catch (Exception e) {
-            log.warn("Invalid token.");
+            throw new RuntimeException("Invalid token.");
         }
-
-        return false;
     }
 
     public String getUsernameFromToken(String token) {
