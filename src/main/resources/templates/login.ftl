@@ -1,5 +1,5 @@
 <#include "base.ftl">
-<#-- @ftlvariable name="user" type="ru.vadmark.petproject.model.User" -->
+<#-- @ftlvariable name="user" type="ru.vadmark.petproject.entity.UserEntity" -->
 
 <#macro page_head>
     <title>Index</title>

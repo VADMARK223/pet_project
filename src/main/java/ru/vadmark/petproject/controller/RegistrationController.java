@@ -36,20 +36,6 @@ public class RegistrationController {
         return "registration";
     }
 
-    private UserForm createCustomUser() {
-        UserForm result = new UserForm();
-        result.setName("User#" + getRandomInt(1, 1000));
-        result.setPassword(String.valueOf(getRandomInt(1, 1000)));
-//        result.setConfirmPassword(String.valueOf(getRandomInt(1, 1000)));
-        result.setConfirmPassword(result.getPassword());
-        return result;
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    private int getRandomInt(int min, int max) {
-        return (int) (Math.random() * (max - min) + min);
-    }
-
     @PostMapping("/registration")
     public String addUser(@ModelAttribute("userForm") @Valid UserForm userForm, BindingResult bindingResult, Model model) {
         log.info("User form: {}.", userForm);
@@ -79,5 +65,19 @@ public class RegistrationController {
         }
 
         return "redirect:/";
+    }
+
+    private UserForm createCustomUser() {
+        UserForm result = new UserForm();
+        result.setName("User#" + getRandomInt(1, 1000));
+        result.setPassword(String.valueOf(getRandomInt(1, 1000)));
+//        result.setConfirmPassword(String.valueOf(getRandomInt(1, 1000)));
+        result.setConfirmPassword(result.getPassword());
+        return result;
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private int getRandomInt(int min, int max) {
+        return (int) (Math.random() * (max - min) + min);
     }
 }

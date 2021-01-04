@@ -2,6 +2,7 @@ package ru.vadmark.petproject.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +23,10 @@ import ru.vadmark.petproject.repository.UserEntityRepository;
 @RequiredArgsConstructor
 public class UserService {
     public static final String ROLE_USER = "ROLE_USER";
+
+    @Value("${registration.autologin}")
+    private boolean autologin;
+
     private final UserEntityRepository userRepository;
     private final RoleEntityRepository roleEntityRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -44,10 +49,12 @@ public class UserService {
         userRepository.save(user);
         log.info("Save user.");
 
-        // Auto login
-        Authentication authentication = new UsernamePasswordAuthenticationToken(user, null,
-                PetUserDetails.fromUserEntity(user).getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (autologin) {
+            log.info("Autologin.");
+            Authentication authentication = new UsernamePasswordAuthenticationToken(user, null,
+                    PetUserDetails.fromUserEntity(user).getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
 
         return true;
     }
