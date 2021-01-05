@@ -19,6 +19,7 @@ import ru.vadmark.petproject.config.jwt.JwtFilter;
 @EnableWebSecurity
 public class PetWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
     private final JwtFilter jwtFilter;
+    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -27,6 +28,8 @@ public class PetWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapte
                 .csrf().disable()
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 //                .and()
+                .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
+                .and()
                 .authorizeRequests()
                 .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/", "/favicon.ico", "/images/**", "/css/**").permitAll()
