@@ -1,8 +1,6 @@
 package ru.vadmark.petproject.config.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -34,6 +32,14 @@ public class JwtProvider {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
+        } catch (ExpiredJwtException expEx) {
+            throw new RuntimeException("Token expired.");
+        } catch (UnsupportedJwtException unsEx) {
+            throw new RuntimeException("Unsupported JWT.");
+        } catch (MalformedJwtException mjEx) {
+            throw new RuntimeException("Malformed JWT.");
+        } catch (SignatureException sEx) {
+            throw new RuntimeException("Invalid signature.");
         } catch (Exception e) {
             throw new RuntimeException("Invalid token.");
         }
