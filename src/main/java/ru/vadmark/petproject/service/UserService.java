@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.vadmark.petproject.entity.RoleEntity;
@@ -57,5 +58,19 @@ public class UserService {
         }
 
         return true;
+    }
+
+    public UserEntity getPrincipalUserEntity() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserEntity userEntity = null;
+        if (principal instanceof UserDetails) {
+            userEntity = userRepository.findByUsername(((UserDetails) principal).getUsername());
+        }
+
+        return userEntity;
+    }
+
+    public void saveUser(UserEntity userEntity) {
+        userRepository.save(userEntity);
     }
 }
