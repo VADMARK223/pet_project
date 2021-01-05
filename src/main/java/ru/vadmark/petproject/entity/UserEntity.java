@@ -21,11 +21,17 @@ public class UserEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "username", length = 20)
+    @Column(name = "username", length = 20, nullable = false, unique = true)
     private String username;
 
-    @Column(name = "password", length = 500)
+    @Column(name = "password", length = 500, nullable = false)
     private String password;
+
+    @Column(name = "email", length = 100, unique = true)
+    private String email;
+
+    @Column(name = "avatar")
+    private byte[] avatar;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<RoleEntity> roles = new HashSet<>();
