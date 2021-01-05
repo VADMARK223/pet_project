@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.vadmark.petproject.config.jwt.JwtProvider;
+import ru.vadmark.petproject.config.jwt.JwtUtil;
 import ru.vadmark.petproject.entity.UserEntity;
 import ru.vadmark.petproject.repository.UserEntityRepository;
 
@@ -18,7 +18,7 @@ import ru.vadmark.petproject.repository.UserEntityRepository;
 @RequiredArgsConstructor
 public class PetUserDetailsService implements UserDetailsService {
     private final UserEntityRepository userRepository;
-    private final JwtProvider jwtProvider;
+    private final JwtUtil jwtUtil;
 
     @Override
     public PetUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -28,7 +28,7 @@ public class PetUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found.");
         }
 
-        String token = jwtProvider.generateToken(user.getUsername());
+        String token = jwtUtil.generateToken(user);
         log.info("Generate token: '{}'.", token);
 
         return PetUserDetails.fromUserEntity(user);

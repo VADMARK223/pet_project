@@ -27,15 +27,15 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
     public static final String AUTHORIZATION = "Authorization";
 
-    private final JwtProvider jwtProvider;
+    private final JwtUtil jwtUtil;
     private final PetUserDetailsService petUserDetailsService;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         log.info("DO FILTER:.");
         String token = getTokenFromRequest(request);
-        if (token != null && jwtProvider.validateToken(token)) {
-            String username = jwtProvider.getUsernameFromToken(token);
+        if (token != null && jwtUtil.validateToken(token)) {
+            String username = jwtUtil.getUsernameFromToken(token);
             PetUserDetails customUserDetails = petUserDetailsService.loadUserByUsername(username);
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
