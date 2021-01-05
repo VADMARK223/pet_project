@@ -6,7 +6,9 @@
 
 <#macro page_body>
     <#list users as user>
-        <h2 class="hello-title">User: №${user.id} ${user.username}</h2>
+        <form action="/admin/user/${user.id}" method="post">
+            <h2 class="hello-title">User: №${user.id} ${user.username} <input type="submit" value="Remove"></h2>
+        </form>
     </#list>
 </#macro>
 

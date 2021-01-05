@@ -31,6 +31,7 @@ public class UserService {
     private final UserEntityRepository userRepository;
     private final RoleEntityRepository roleEntityRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PetUserDetailsService petUserDetailsService;
 
     public boolean saveUser(UserForm userForm) {
         if (userRepository.findByUsername(userForm.getName()) != null) {
@@ -52,9 +53,12 @@ public class UserService {
 
         if (autologin) {
             log.info("Autologin.");
-            Authentication authentication = new UsernamePasswordAuthenticationToken(user, null,
-                    PetUserDetails.fromUserEntity(user).getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+//            Authentication authentication = new UsernamePasswordAuthenticationToken(user, null,
+//                    PetUserDetails.fromUserEntity(user).getAuthorities());
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
+            PetUserDetails customUserDetails = petUserDetailsService.loadUserByUsername(user.getUsername());
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         }
 
         return true;
@@ -62,6 +66,7 @@ public class UserService {
 
     public UserEntity getPrincipalUserEntity() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        log.info("principal: {}.", principal);
         UserEntity userEntity = null;
         if (principal instanceof UserDetails) {
             userEntity = userRepository.findByUsername(((UserDetails) principal).getUsername());
