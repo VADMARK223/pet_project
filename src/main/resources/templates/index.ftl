@@ -14,7 +14,7 @@
         <a href="/logout">Log out</a><br>
     </@sec.authorize>
     <a href="/registration">Registration</a><br>
-    <a href="/users">Users</a><br>
+    <a href="/admin">Admin</a><br>
     <a href="/upload">Upload</a><br>
 </#macro>
 

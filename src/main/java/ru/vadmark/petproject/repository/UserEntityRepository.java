@@ -5,6 +5,7 @@ import org.springframework.lang.NonNull;
 import ru.vadmark.petproject.entity.UserEntity;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * Author: Markitanov Vadim
@@ -16,4 +17,6 @@ public interface UserEntityRepository extends CrudRepository<UserEntity, Integer
     ArrayList<UserEntity> findAll();
 
     UserEntity findByUsername(String value);
+
+    Optional<UserEntity> findById(Long id);
 }

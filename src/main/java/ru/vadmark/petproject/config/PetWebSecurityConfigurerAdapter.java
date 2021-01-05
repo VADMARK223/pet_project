@@ -32,10 +32,9 @@ public class PetWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapte
 //                .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
 //                .and()
                 .authorizeRequests()
-                .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/", "/favicon.ico", "/images/**", "/css/**").permitAll()
-                .antMatchers("/upload").permitAll() // TODO: 05.01.2021 Remove after debug
                 .antMatchers("/registration").not().fullyAuthenticated()
+                .antMatchers("/admin", "/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").defaultSuccessUrl("/").permitAll()
