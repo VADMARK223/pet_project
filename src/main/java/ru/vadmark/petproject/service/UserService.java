@@ -51,7 +51,7 @@ public class UserService {
         log.info("Save user.");
 
         if (autologin) {
-            log.info("Autologin.");
+            log.info("Autologin. ");
             UserDetails userDetails = petUserDetailsService.loadUserByUsername(user.getUsername());
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
