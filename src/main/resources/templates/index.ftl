@@ -15,7 +15,7 @@
     </@sec.authorize>
     <a href="/registration">Registration</a><br>
     <a href="/admin">Admin</a><br>
-    <a href="/upload">Upload</a><br>
+    <a href="/settings">Settings</a><br>
 </#macro>
 
 <@display_page/>

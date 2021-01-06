@@ -24,7 +24,7 @@ import java.util.Base64;
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-public class UploadController {
+public class SettingsController {
 
     @Bean
     public MultipartResolver multipartResolver() {
@@ -37,8 +37,8 @@ public class UploadController {
 
     private final UserService userService;
 
-    @GetMapping("/upload")
-    public String upload(Model model) {
+    @GetMapping("/settings")
+    public String settings(Model model) {
         byte[] rawAvatar = null;
 
         UserEntity userEntity = userService.getPrincipalUserEntity();
@@ -51,11 +51,11 @@ public class UploadController {
 
         model.addAttribute("avatarForm", new AvatarForm());
 
-        return "upload";
+        return "settings";
     }
 
     @PostMapping("/upload")
-    public String postUpload(Model model, @ModelAttribute("avatarForm") AvatarForm avatarForm) {
+    public String upload(Model model, @ModelAttribute("avatarForm") AvatarForm avatarForm) {
         log.info("avatarForm: {}.", avatarForm);
 
         byte[] rawAvatar = null;
@@ -69,6 +69,6 @@ public class UploadController {
         String imgAsBase64 = rawAvatar == null ? "" : new String(Base64.getEncoder().encode(rawAvatar));
         model.addAttribute("imgAsBase64", "data:image/jpeg;base64," + imgAsBase64);
         model.addAttribute("avatarForm", avatarForm);
-        return "upload";
+        return "settings";
     }
 }
