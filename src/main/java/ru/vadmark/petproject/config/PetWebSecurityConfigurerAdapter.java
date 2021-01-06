@@ -31,6 +31,8 @@ public class PetWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapte
 //                .and()
 //                .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
 //                .and()
+                .exceptionHandling().accessDeniedPage("/accessDenied")
+                .and()
                 .authorizeRequests()
                 .antMatchers("/", "/favicon.ico", "/images/**", "/css/**").permitAll()
                 .antMatchers("/registration").not().fullyAuthenticated()
