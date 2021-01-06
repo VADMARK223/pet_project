@@ -1,0 +1,40 @@
+logging:
+  level:
+    org.springframefork: INFO
+  file:
+    name: log/application.log
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    open-in-view: false
+
+  datasource:
+    initialization-mode: never
+    url: jdbc:postgresql://localhost:5432/pet_db
+    username: postgres
+    password: root
+
+  banner:
+    location: classpath:/static/banner.txt
+
+  freemarker:
+    template-loader-path: classpath:/templates
+    suffix: .ftl
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+
+registration:
+  autologin: true
+  username:
+    length: 1
+  password:
+    length: 1
+
+jwt:
+  secret: sdfkgjdfgsdkfj

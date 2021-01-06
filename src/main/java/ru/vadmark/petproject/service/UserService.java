@@ -24,7 +24,7 @@ import ru.vadmark.petproject.repository.UserEntityRepository;
 public class UserService {
     public static final String ROLE_USER = "ROLE_USER";
 
-    @Value("${registration.autologin}")
+    @Value("${registration.autologin: false}")
     private boolean autologin;
 
     private final UserEntityRepository userRepository;
