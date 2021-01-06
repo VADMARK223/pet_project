@@ -19,7 +19,6 @@ import ru.vadmark.petproject.config.jwt.JwtFilter;
 @EnableWebSecurity
 public class PetWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
     private final JwtFilter jwtFilter;
-    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
