@@ -62,7 +62,7 @@ public class UserService {
 
     public UserEntity getPrincipalUserEntity() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        log.info("Principal: {}.", principal);
+        log.info("Principal: '{}'.", principal);
         if (principal instanceof UserDetails) {
             return (UserEntity) principal;
         }
