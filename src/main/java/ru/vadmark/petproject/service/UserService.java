@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -53,11 +52,8 @@ public class UserService {
 
         if (autologin) {
             log.info("Autologin.");
-//            Authentication authentication = new UsernamePasswordAuthenticationToken(user, null,
-//                    PetUserDetails.fromUserEntity(user).getAuthorities());
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-            PetUserDetails customUserDetails = petUserDetailsService.loadUserByUsername(user.getUsername());
-            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
+            UserDetails userDetails = petUserDetailsService.loadUserByUsername(user.getUsername());
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         }
 
@@ -66,13 +62,12 @@ public class UserService {
 
     public UserEntity getPrincipalUserEntity() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        log.info("principal: {}.", principal);
-        UserEntity userEntity = null;
+        log.info("Principal: {}.", principal);
         if (principal instanceof UserDetails) {
-            userEntity = userRepository.findByUsername(((UserDetails) principal).getUsername());
+            return (UserEntity) principal;
         }
 
-        return userEntity;
+        return null;
     }
 
     public void saveUser(UserEntity userEntity) {

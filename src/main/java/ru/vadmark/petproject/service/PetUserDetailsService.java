@@ -2,6 +2,7 @@ package ru.vadmark.petproject.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class PetUserDetailsService implements UserDetailsService {
     private final JwtUtil jwtUtil;
 
     @Override
-    public PetUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userRepository.findByUsername(username);
 
         if (user == null) {
@@ -31,6 +32,6 @@ public class PetUserDetailsService implements UserDetailsService {
         String token = jwtUtil.generateToken(user);
         log.info("Generate token: '{}'.", token);
 
-        return PetUserDetails.fromUserEntity(user);
+        return user;
     }
 }
