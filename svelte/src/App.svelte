@@ -3,7 +3,21 @@
     import Router from './app/routing/Router.svelte';
 </script>
 
-<main>
+<nav>
     <Sidenav/>
+</nav>
+<article>
     <Router/>
-</main>
+</article>
+
+<style>
+    nav {
+        width: 150px;
+        float: left;
+    }
+
+    article {
+        height: 100%;
+        overflow: hidden;
+    }
+</style>

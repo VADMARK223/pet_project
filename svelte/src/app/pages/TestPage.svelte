@@ -2,7 +2,7 @@
     let data = "data";
 
     async function fetchDataHandler() {
-        const url = "http://localhost:8080/test";
+        const url = "http://localhost:8080/svelte/test4";
         const response = await fetch(url);
         const json = await response.json();
         data = json.data;
