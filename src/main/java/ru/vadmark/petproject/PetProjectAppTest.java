@@ -13,6 +13,7 @@ import ru.vadmark.petproject.repository.UserEntityRepository;
  * Date: 05.01.2021
  */
 //@SpringBootApplication
+@Deprecated
 public class PetProjectAppTest {/* implements CommandLineRunner {
 
     @Autowired

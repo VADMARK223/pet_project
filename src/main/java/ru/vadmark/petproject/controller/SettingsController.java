@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import ru.vadmark.petproject.entity.UserEntity;
-import ru.vadmark.petproject.model.AvatarForm;
+import ru.vadmark.petproject.repository.model.AvatarForm;
 import ru.vadmark.petproject.service.UserService;
 
 import java.util.Base64;

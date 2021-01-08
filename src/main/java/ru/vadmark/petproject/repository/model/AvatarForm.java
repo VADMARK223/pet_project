@@ -1,4 +1,4 @@
-package ru.vadmark.petproject.model;
+package ru.vadmark.petproject.repository.model;
 
 import lombok.Data;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;

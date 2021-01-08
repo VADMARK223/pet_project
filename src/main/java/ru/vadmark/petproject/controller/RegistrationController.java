@@ -9,7 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.vadmark.petproject.model.UserForm;
+import ru.vadmark.petproject.repository.model.UserForm;
 import ru.vadmark.petproject.service.UserService;
 
 import javax.validation.Valid;

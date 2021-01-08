@@ -2,7 +2,6 @@ package ru.vadmark.petproject.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -12,12 +11,11 @@ import ru.vadmark.petproject.config.jwt.JwtFilter;
 
 /**
  * Author: Markitanov Vadim
- * Date: 27.12.2020
+ * Date: 07.01.2021
  */
-@Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
-public class PetWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+public class VadmarkSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtFilter jwtFilter;
 
     @Override
@@ -25,13 +23,13 @@ public class PetWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapte
         http
                 .httpBasic().disable()
                 .csrf().disable()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)  
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 //                .and()
 //                .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
 //                .and()
                 .exceptionHandling().accessDeniedPage("/accessDenied").and()
                 .authorizeRequests()
-                .antMatchers("/", "/favicon.ico", "/images/**", "/css/**").permitAll()
+                .antMatchers("/", "/test", "/favicon.ico", "/images/**", "/css/**").permitAll()
                 .antMatchers("/registration").not().fullyAuthenticated()
                 .antMatchers("/admin", "/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()

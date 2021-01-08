@@ -10,7 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.vadmark.petproject.entity.RoleEntity;
 import ru.vadmark.petproject.entity.UserEntity;
-import ru.vadmark.petproject.model.UserForm;
+import ru.vadmark.petproject.repository.model.UserForm;
 import ru.vadmark.petproject.repository.RoleEntityRepository;
 import ru.vadmark.petproject.repository.UserEntityRepository;
 
