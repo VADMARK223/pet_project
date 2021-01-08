@@ -1,11 +1,10 @@
 <script>
-    let data = "data";
+    let data = "";
 
     async function fetchDataHandler() {
         const url = "http://localhost:8080/svelte/test";
         const response = await fetch(url);
-        const json = await response.json();
-        data = json.data;
+        data = await response.text();
     }
 </script>
 

@@ -29,7 +29,7 @@ public class VadmarkSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .and()
                 .exceptionHandling().accessDeniedPage("/accessDenied").and()
                 .authorizeRequests()
-                .antMatchers("/", "/svelte/*", "/favicon.ico", "/images/**", "/css/**").permitAll()
+                .antMatchers("/", "/svelte/**", "/favicon.ico", "/images/**", "/css/**").permitAll()
                 .antMatchers("/registration").not().fullyAuthenticated()
                 .antMatchers("/admin", "/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
