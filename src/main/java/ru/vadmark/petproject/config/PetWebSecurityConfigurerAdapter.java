@@ -25,7 +25,7 @@ public class PetWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapte
         http
                 .httpBasic().disable()
                 .csrf().disable()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)  
 //                .and()
 //                .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
 //                .and()
