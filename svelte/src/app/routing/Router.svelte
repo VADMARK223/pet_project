@@ -1,6 +1,7 @@
 <script>
     import {hash} from '../services/router';
     import Homepage from '../pages/HomePage.svelte';
+    import TestPage from '../pages/TestPage.svelte';
     import NotFoundPage from '../pages/NotFoundPage.svelte';
 
     let value = Homepage;
@@ -10,6 +11,9 @@
         switch (val) {
             case 'home':
                 value = Homepage;
+                break;
+            case 'test':
+                value = TestPage;
                 break;
             default:
                 value = NotFoundPage;
