@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("${rest.svelte.base.path}")
-public class SvelteController {
+public class RestSvelteController {
     @GetMapping("/test")
     public String test() {
         return "{\"data\":\"vadmark11\"}";
