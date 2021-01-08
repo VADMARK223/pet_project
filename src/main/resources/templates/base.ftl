@@ -17,6 +17,7 @@
             <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
         </head>
         <body>
+            <h2>Freemarker</h2>
             <div id="nav"><a href="/">Home</a></div>
             <@page_body/>
         </body>

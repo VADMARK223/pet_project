@@ -2,14 +2,13 @@
     let data = "data";
 
     async function fetchDataHandler() {
-        const url = "http://localhost:8080/svelte/users";
+        const url = "http://localhost:8080/svelte/admin";
         const response = await fetch(url);
 
         data = await response.text();
-        document.getElementById("temp").insertAdjacentHTML('afterend', data)
+        // document.getElementById("temp").insertAdjacentHTML('afterend', data)
     }
-</script>
 
-<button on:click={fetchDataHandler}>Fetch users</button>
-<hr>
-<div id="temp"></div>
+    fetchDataHandler();
+</script>
+Data: {data}

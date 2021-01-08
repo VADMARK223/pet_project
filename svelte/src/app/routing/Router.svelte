@@ -8,7 +8,7 @@
     let value = Homepage;
 
     hash.subscribe(val => {
-        console.log("hash=" + val);
+        console.log("Hash = " + val);
         switch (val) {
             case 'home':
                 value = Homepage;
