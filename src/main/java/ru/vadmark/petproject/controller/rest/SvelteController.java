@@ -1,6 +1,7 @@
 package ru.vadmark.petproject.controller.rest;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,24 +28,11 @@ public class SvelteController {
         return "admin_s";
     }
 
-
     @GetMapping("/test")
-    public String test() {
-        return "{\"data\":\"vadmark11\"}";
-    }
-
-    @GetMapping("/test1")
-    public String test1() {
-        return "{\"data\":\"vadmark111111\"}";
-    }
-
-    @GetMapping("/test3")
-    public String test3() {
-        return "{\"data\":\"vadmark3333\"}";
-    }
-
-    @GetMapping("/test4")
-    public String test4() {
-        return "{\"data\":\"vadmark444\"}";
+    public UserEntity test() {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId(99L);
+        userEntity.setUsername("VADMARK");
+        return userEntity;
     }
 }

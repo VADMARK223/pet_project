@@ -1,14 +1,12 @@
 <script>
-    let data = "data";
+    let data = "";
 
     async function fetchDataHandler() {
-        const url = "http://localhost:8080/svelte/admin";
+        const url = "http://localhost:8080/svelte/test";
         const response = await fetch(url);
-
-        data = await response.text();
-        // document.getElementById("temp").insertAdjacentHTML('afterend', data)
+        data = await response.json();
     }
 
     fetchDataHandler();
 </script>
-Data: {data}
+<h2>User: №{data.id} {data.username} <button>Remove</button></h2>
