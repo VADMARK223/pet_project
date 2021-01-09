@@ -5,7 +5,7 @@
     <title>Index</title>
 </#macro>
 
-<#macro page_body>
+<#macro article>
     <#if user??>
         Hello, ${user.username}.
     <#else>

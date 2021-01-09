@@ -5,7 +5,7 @@
     <title>Registration</title>
 </#macro>
 
-<#macro page_body>
+<#macro article>
     <form action="/registration" method="post">
         <@spring.bind path="userForm"/>
 

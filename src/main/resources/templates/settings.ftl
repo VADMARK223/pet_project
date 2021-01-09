@@ -5,7 +5,7 @@
     <title>Upload</title>
 </#macro>
 
-<#macro page_body>
+<#macro article>
     <img src="${imgAsBase64}" alt="Image not valid."/>
 
     <form action="/upload" method="post" enctype="multipart/form-data">

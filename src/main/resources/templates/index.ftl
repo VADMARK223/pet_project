@@ -1,21 +1,11 @@
-<#assign sec=JspTaglibs["http://www.springframework.org/security/tags"]/>
 <#include "base.ftl">
-<#--<#assign sec=JspTaglibs["http://www.springframework.org/security/tags"]/>-->
 
 <#macro page_head>
     <title>Index</title>
 </#macro>
 
-<#macro page_body>
-    <@sec.authorize access="!isAuthenticated()">
-        <a href="/login">Sing in</a><br>
-    </@sec.authorize>
-    <@sec.authorize access="isAuthenticated()">
-        <a href="/logout">Log out</a><br>
-    </@sec.authorize>
-    <a href="/registration">Registration</a><br>
-    <a href="/admin">Admin</a><br>
-    <a href="/settings">Settings</a><br>
+<#macro article>
+    <h1>Home</h1>
 </#macro>
 
 <@display_page/>

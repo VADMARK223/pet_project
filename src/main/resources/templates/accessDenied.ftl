@@ -4,7 +4,7 @@
     <title>Error</title>
 </#macro>
 
-<#macro page_body>
+<#macro article>
     <h2>Sorry, you do not have permission to view this page.</h2>
 </#macro>
 
