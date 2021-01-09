@@ -1,9 +1,10 @@
 <script>
     export let id
     export let username = "Undefined username"
+
     function submitHandler() {
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://localhost:8080/svelte/admin/user/" + id)
+        xhr.open("POST", process.env.API_BASE_URL + "/admin/user/" + id)
         xhr.onload = function () {
             location.reload();
         }

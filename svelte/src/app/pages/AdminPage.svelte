@@ -3,7 +3,8 @@
     let users = "";
 
     async function fetchDataHandler() {
-        const url = "http://localhost:8080/svelte/admin";
+        console.log(">>>>   " + process.env.API_BASE_URL);
+        const url = process.env.API_BASE_URL + "/admin";
         const response = await fetch(url);
         users = await response.json();
     }

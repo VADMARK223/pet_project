@@ -2,7 +2,7 @@
     let data = "";
 
     async function fetchDataHandler() {
-        const url = "http://localhost:8080/svelte/test";
+        const url = process.env.API_BASE_URL + "/test";
         const response = await fetch(url);
         data = await response.text();
     }
