@@ -1,14 +1,13 @@
 <script>
+    import {onMount} from 'svelte'
+    import {getUserList} from "../services/users";
     import User from '../components/User.svelte'
+
     let users = "";
 
-    async function fetchDataHandler() {
-        const url = process.env.API_BASE_URL + "/admin";
-        const response = await fetch(url);
-        users = await response.json();
-    }
-
-    fetchDataHandler();
+    onMount(async () => {
+        users = await getUserList();
+    })
 </script>
 {#each users as user}
     <User id="{user.id}" username="{user.username}"/>
