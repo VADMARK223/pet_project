@@ -1,5 +1,6 @@
 package ru.vadmark.petproject.controller;
 
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * Author: Markitanov Vadim
  * Date: 28.12.2020
  */
+@Api(tags = "Login")
 @Controller
 @Slf4j
 @RequiredArgsConstructor

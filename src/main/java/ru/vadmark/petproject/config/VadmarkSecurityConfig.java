@@ -22,7 +22,9 @@ public class VadmarkSecurityConfig extends WebSecurityConfigurerAdapter {
             "/images/**",
             "/css/**",
             "/svelte/**",
-            "/ws",
+            "/ws"
+    };
+    private static final String[] SWAGGER_WHITELIST = {
             "/documentation/swagger-ui/",
             "/documentation/swagger-ui/*",
             "/documentation/swagger-resources/**",
@@ -40,6 +42,7 @@ public class VadmarkSecurityConfig extends WebSecurityConfigurerAdapter {
                 exceptionHandling().accessDeniedPage("/accessDenied").and().
                 authorizeRequests().
                 antMatchers(AUTH_WHITELIST).permitAll().
+                antMatchers(SWAGGER_WHITELIST).permitAll().
                 antMatchers("/registration").not().fullyAuthenticated().
                 antMatchers(ADMIN_WHITELIST).hasRole("ADMIN").
                 anyRequest().authenticated().and().

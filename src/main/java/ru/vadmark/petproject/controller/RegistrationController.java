@@ -1,5 +1,7 @@
 package ru.vadmark.petproject.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +20,7 @@ import javax.validation.Valid;
  * Author: Markitanov Vadim
  * Date: 27.12.2020
  */
+@Api(tags = "Registration")
 @Controller
 @Slf4j
 @RequiredArgsConstructor
@@ -36,6 +39,7 @@ public class RegistrationController {
         return "registration";
     }
 
+    @ApiOperation("Register a new user.")
     @PostMapping("/registration")
     public String addUser(@ModelAttribute("userForm") @Valid UserForm userForm, BindingResult bindingResult, Model model) {
         log.info("User form: {}.", userForm);

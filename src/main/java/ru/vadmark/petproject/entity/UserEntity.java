@@ -1,5 +1,7 @@
 package ru.vadmark.petproject.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,10 +18,12 @@ import java.util.Set;
  * Author: Markitanov Vadim
  * Date: 04.01.2021
  */
+@ApiModel("User entity")
 @Data
 @Entity
 @Table(name = "users")
 public class UserEntity implements UserDetails {
+    @ApiModelProperty("Role ID.")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

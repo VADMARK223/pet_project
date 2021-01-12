@@ -1,5 +1,8 @@
 package ru.vadmark.petproject.controller.rest;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
@@ -14,6 +17,7 @@ import java.util.Optional;
  * Author: Markitanov Vadim
  * Date: 07.01.2021
  */
+@Api(tags = "Svelte")
 @RequiredArgsConstructor
 @Slf4j
 @RestController
