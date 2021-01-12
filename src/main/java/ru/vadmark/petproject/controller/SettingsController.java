@@ -31,6 +31,7 @@ public class SettingsController {
         CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
         // 1 MB 1*1024*1024
         commonsMultipartResolver.setMaxUploadSize(Long.MAX_VALUE);
+
         return commonsMultipartResolver;
     }
 

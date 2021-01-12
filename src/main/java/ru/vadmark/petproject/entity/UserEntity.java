@@ -1,7 +1,7 @@
 package ru.vadmark.petproject.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,8 +16,7 @@ import java.util.Set;
  * Author: Markitanov Vadim
  * Date: 04.01.2021
  */
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "users")
 public class UserEntity implements UserDetails {
@@ -29,15 +28,19 @@ public class UserEntity implements UserDetails {
     @Column(name = "username", length = 20, nullable = false, unique = true)
     private String username;
 
+    @ToString.Exclude
     @Column(name = "password", length = 500, nullable = false)
     private String password;
 
+    @ToString.Exclude
     @Column(name = "email", length = 100, unique = true)
     private String email;
 
+    @ToString.Exclude
     @Column(name = "avatar")
     private byte[] avatar;
 
+    @ToString.Exclude
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<RoleEntity> roles = new HashSet<>();
 

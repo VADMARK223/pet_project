@@ -2,6 +2,7 @@ package ru.vadmark.petproject.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -29,7 +30,7 @@ public class VadmarkSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .and()
                 .exceptionHandling().accessDeniedPage("/accessDenied").and()
                 .authorizeRequests()
-                .antMatchers("/", "/svelte/**", "/favicon.ico", "/images/**", "/css/**").permitAll()
+                .antMatchers("/", "/svelte/**", "/ws", "/favicon.ico", "/images/**", "/css/**").permitAll()
                 .antMatchers("/registration").not().fullyAuthenticated()
                 .antMatchers("/admin", "/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
