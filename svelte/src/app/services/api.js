@@ -23,8 +23,10 @@ const apiRequest = (method, url, request) => {
 }
 
 const get = (url, request) => apiRequest("get", url, request);
+const del = (url, request) => apiRequest("post", url, request);
 
 const api ={
-    get
+    get,
+    del
 }
 export default api;

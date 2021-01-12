@@ -1,14 +1,13 @@
 <script>
+    import {deleteUser} from "../services/users";
+
     export let id
     export let username = "Undefined username"
 
     function submitHandler() {
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", process.env.API_BASE_URL + "/admin/user/" + id)
-        xhr.onload = function () {
+        deleteUser(id).then(() => {
             location.reload();
-        }
-        xhr.send();
+        });
     }
 </script>
 

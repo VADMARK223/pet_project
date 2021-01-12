@@ -27,12 +27,10 @@ public class SvelteController {
     }
 
     @PostMapping("/admin/user/{id}")
-    public String deleteUser(@PathVariable long id, Model model) {
+    public void deleteUser(@PathVariable long id) {
         log.info("Delete user: {}.", id);
         Optional<UserEntity> optionalUser = userRepository.findById(id);
         optionalUser.ifPresent(userRepository::delete);
-        model.addAttribute("users", userRepository.findAll());
-        return "admin";
     }
 
     @GetMapping("/test")
