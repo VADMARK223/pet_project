@@ -2,7 +2,6 @@ package ru.vadmark.petproject.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -17,32 +16,39 @@ import ru.vadmark.petproject.config.jwt.JwtFilter;
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class VadmarkSecurityConfig extends WebSecurityConfigurerAdapter {
+    private static final String[] AUTH_WHITELIST = {
+            "/",
+            "/favicon.ico",
+            "/images/**",
+            "/css/**",
+            "/svelte/**",
+            "/ws",
+            "/documentation/swagger-ui/",
+            "/documentation/swagger-ui/*",
+            "/documentation/swagger-resources/**",
+            "/v3/api-docs"
+    };
+    private static final String[] ADMIN_WHITELIST = {"/admin", "/admin/**"};
     private final JwtFilter jwtFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .httpBasic().disable()
-                .csrf().disable()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
-//                .and()
-                .exceptionHandling().accessDeniedPage("/accessDenied").and()
-                .authorizeRequests()
-                .antMatchers("/", "/svelte/**", "/ws", "/favicon.ico", "/images/**", "/css/**").permitAll()
-                .antMatchers("/registration").not().fullyAuthenticated()
-                .antMatchers("/admin", "/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-                .and()
+        http.
+//                sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().
+//                exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and().
+        csrf().disable().
+                exceptionHandling().accessDeniedPage("/accessDenied").and().
+                authorizeRequests().
+                antMatchers(AUTH_WHITELIST).permitAll().
+                antMatchers("/registration").not().fullyAuthenticated().
+                antMatchers(ADMIN_WHITELIST).hasRole("ADMIN").
+                anyRequest().authenticated().and().
 
-                .formLogin().loginPage("/login").defaultSuccessUrl("/").permitAll()
-                .and()
+                formLogin().loginPage("/login").defaultSuccessUrl("/").permitAll().and().
 
-                .logout().logoutSuccessUrl("/").permitAll()
-                .and()
+                logout().logoutSuccessUrl("/").permitAll().and().
 
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

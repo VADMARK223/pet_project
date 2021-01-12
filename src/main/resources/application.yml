@@ -1,6 +1,7 @@
 logging:
   level:
     org.springframefork: INFO
+    springfox.documentation: INFO
   file:
     name: log/application.log
 
@@ -28,6 +29,14 @@ server:
   error:
     whitelabel:
       enabled: false
+
+springfox:
+  documentation:
+    swagger-ui:
+      base-url: /documentation
+    swagger:
+      v2:
+        use-model-v3: false
 
 registration:
   autologin: true
