@@ -23,10 +23,11 @@ public class SvelteController {
 
     @GetMapping("/admin")
     public List<UserEntity> admin() {
+        log.info("Get admin");
         return userRepository.findAll();
     }
 
-    @PostMapping("/admin/user/{id}")
+    @DeleteMapping("/admin/user/{id}")
     public void deleteUser(@PathVariable long id) {
         log.info("Delete user: {}.", id);
         Optional<UserEntity> optionalUser = userRepository.findById(id);

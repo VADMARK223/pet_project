@@ -20,6 +20,8 @@ public class VadmarkWebMvcConfigurer implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/svelte/**").allowedOrigins("http://localhost:5000");
+        registry.addMapping("/svelte/**")
+                .allowedMethods("POST", "GET", "DELETE")
+                .allowedOrigins("http://localhost:5000");
     }
 }
