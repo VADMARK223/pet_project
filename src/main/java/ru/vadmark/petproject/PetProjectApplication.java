@@ -43,7 +43,7 @@ public class PetProjectApplication {
 
     @Bean
     public Docket docket() {
-        return new Docket(DocumentationType.SWAGGER_2).
+        return new Docket(DocumentationType.OAS_30).
                 select().
                 apis(RequestHandlerSelectors.basePackage("ru.vadmark.petproject.controller")).
                 paths(PathSelectors.any()).
@@ -55,7 +55,7 @@ public class PetProjectApplication {
         return new ApiInfo(
                 "Pet project API",
                 "Project for demo.",
-                "0.0.1",
+                "1.0",
                 "Term of service",
                 new Contact("Markitanov Vadim", "https://vk.com/random223", "vadmark223@mail.ru"),
                 "Apache 2.0",
