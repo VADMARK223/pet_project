@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import ru.vadmark.petproject.repository.model.RegistrationForm;
 import ru.vadmark.petproject.repository.model.UserForm;
 import ru.vadmark.petproject.service.UserService;
 
@@ -25,55 +26,31 @@ import javax.validation.Valid;
 @Slf4j
 @RequiredArgsConstructor
 public class RegistrationController {
-    @Value("${registration.username.length: 2}")
-    private short usernameLength;
-
-    @Value("${registration.password.length: 8}")
-    private short passwordLength;
-
     private final UserService userService;
 
     @GetMapping("/registration")
     public String registration(Model model) {
-        model.addAttribute("userForm", createCustomUser());
+        model.addAttribute("registrationForm", createCustomUser());
         return "registration";
     }
 
     @ApiOperation("Register a new user.")
     @PostMapping("/registration")
-    public String addUser(@ModelAttribute("userForm") @Valid UserForm userForm, BindingResult bindingResult, Model model) {
-        log.info("User form: {}.", userForm);
+    public String addUser(@ModelAttribute("registrationForm") RegistrationForm registrationForm, Model model) {
+        log.info("Registration form: {}.", registrationForm);
 
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("error", "Error");
-        }
-
-        if (userForm.getName().length() < usernameLength) {
-            model.addAttribute("error", String.format("Username is too short (minimum is %d characters).", usernameLength));
-            return "registration";
-        }
-
-        if (userForm.getPassword().length() < passwordLength) {
-            model.addAttribute("error", String.format("Minimum length password is %d characters.", passwordLength));
-            return "registration";
-        }
-
-        if (!userForm.getPassword().equals(userForm.getConfirmPassword())) {
-            model.addAttribute("error", "Password confirmation doesn't match Password.");
-            return "registration";
-        }
-
-        if (!userService.saveUser(userForm)) {
-            model.addAttribute("error", "Username is already taken.");
+        String error = userService.registrationUser(registrationForm);
+        if (error != null) {
+            model.addAttribute("error", error);
             return "registration";
         }
 
         return "redirect:/";
     }
 
-    private UserForm createCustomUser() {
-        UserForm result = new UserForm();
-        result.setName("User#" + getRandomInt(1, 1000));
+    private RegistrationForm createCustomUser() {
+        RegistrationForm result = new RegistrationForm();
+        result.setUsername("User#" + getRandomInt(1, 1000));
         result.setPassword(String.valueOf(getRandomInt(1, 1000)));
 //        result.setConfirmPassword(String.valueOf(getRandomInt(1, 1000)));
         result.setConfirmPassword(result.getPassword());

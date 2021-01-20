@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.vadmark.petproject.config.jwt.JwtFilter;
 
@@ -14,7 +15,8 @@ import ru.vadmark.petproject.config.jwt.JwtFilter;
  * Date: 07.01.2021
  */
 @RequiredArgsConstructor
-@EnableWebSecurity
+@EnableWebSecurity/*(debug = true)*/
+// @EnableGlobalMethodSecurity(securedEnabled = true)
 public class VadmarkSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] AUTH_WHITELIST = {
             "/",
@@ -55,7 +57,15 @@ public class VadmarkSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    /*@Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        authenticationProvider.setUserDetailsService(...);
+        return authenticationProvider;
+    }*/
 }

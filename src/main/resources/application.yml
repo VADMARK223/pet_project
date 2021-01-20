@@ -17,6 +17,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/pet_db
     username: postgres
     password: root
+    driver-class-name: org.postgresql.Driver
 
   banner:
     location: classpath:/static/banner.txt

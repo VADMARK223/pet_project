@@ -7,7 +7,7 @@
 
 <#macro article>
     <form action="/registration" method="post">
-        <@spring.bind path="userForm"/>
+        <@spring.bind path="registrationForm"/>
 
         <#if error??>
             <p style="color: red">${error}</p>
@@ -17,19 +17,19 @@
             <tr>
                 <td>Username:</td>
                 <td>
-                    <@spring.formInput "userForm.name" "name" "text"/>
+                    <@spring.formInput "registrationForm.username" "username" "text"/>
                 </td>
             </tr>
             <tr>
                 <td>Password:</td>
                 <td>
-                    <@spring.formInput "userForm.password" "password" "password"/>
+                    <@spring.formInput "registrationForm.password" "password" "password"/>
                 </td>
             </tr>
             <tr>
                 <td>Password confirmation:</td>
                 <td>
-                    <@spring.formInput "userForm.confirmPassword" "confirmPassword" "password"/>
+                    <@spring.formInput "registrationForm.confirmPassword" "confirmPassword" "password"/>
                 </td>
             </tr>
             <tr>

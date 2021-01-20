@@ -15,6 +15,7 @@ import ru.vadmark.petproject.entity.UserEntity;
 import ru.vadmark.petproject.repository.model.AvatarForm;
 import ru.vadmark.petproject.service.UserService;
 
+import java.security.Principal;
 import java.util.Base64;
 
 
@@ -41,10 +42,10 @@ public class SettingsController {
     private final UserService userService;
 
     @GetMapping("/settings")
-    public String settings(Model model) {
+    public String settings(Model model, Principal principal) {
         byte[] rawAvatar = null;
 
-        UserEntity userEntity = userService.getPrincipalUserEntity();
+        UserEntity userEntity = userService.getUserByUsername(principal.getName());
         if (userEntity != null) {
             rawAvatar = userEntity.getAvatar();
         }
@@ -58,11 +59,11 @@ public class SettingsController {
     }
 
     @PostMapping("/upload")
-    public String upload(Model model, @ModelAttribute("avatarForm") AvatarForm avatarForm) {
+    public String upload(Model model, @ModelAttribute("avatarForm") AvatarForm avatarForm, Principal principal) {
         log.info("avatarForm: {}.", avatarForm);
 
         byte[] rawAvatar = null;
-        UserEntity userEntity = userService.getPrincipalUserEntity();
+        UserEntity userEntity = userService.getUserByUsername(principal.getName());
         if (userEntity != null) {
             userEntity.setAvatar(avatarForm.getImage().getBytes());
             userService.saveUser(userEntity);

@@ -33,7 +33,7 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <input type="submit" value="Sing in">
+                        <input type="submit" value="Sign in">
                     </td>
                 </tr>
             </table>

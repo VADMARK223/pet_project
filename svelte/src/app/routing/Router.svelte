@@ -44,12 +44,3 @@
 <main>
     <svelte:component this="{value}"/>
 </main>
-
-<style>
-    main {
-        flex-grow: 1;
-        background-color: var(--primary-color-2);
-        color: var(--second-color);
-        padding: 1rem;
-    }
-</style>

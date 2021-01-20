@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.vadmark.petproject.config.jwt.JwtUtil;
 import ru.vadmark.petproject.entity.UserEntity;
 import ru.vadmark.petproject.repository.UserEntityRepository;
@@ -22,11 +23,12 @@ public class PetUserDetailsService implements UserDetailsService {
     private final JwtUtil jwtUtil;
 
     @Override
+    // @Transactional if roles lazy load.
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userRepository.findByUsername(username);
 
         if (user == null) {
-            throw new UsernameNotFoundException("User not found.");
+            throw new UsernameNotFoundException(String.format("User '%s' not found.", username));
         }
 
         String token = jwtUtil.generateToken(user);

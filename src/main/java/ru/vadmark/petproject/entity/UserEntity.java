@@ -9,10 +9,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Author: Markitanov Vadim
@@ -50,9 +50,7 @@ public class UserEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        final Collection<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
-        this.getRoles().forEach(roleEntity -> grantedAuthorities.add(new SimpleGrantedAuthority(roleEntity.getName())));
-        return grantedAuthorities;
+        return this.getRoles().stream().map(roleEntity -> new SimpleGrantedAuthority(roleEntity.getName())).collect(Collectors.toList());
     }
 
     @Override

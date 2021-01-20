@@ -6,6 +6,7 @@
 
 <#macro article>
     <h1>Home</h1>
+    <a href="/documentation/swagger-ui/" target="_blank">Documentation</a><br>
 </#macro>
 
 <@display_page/>
