@@ -5,10 +5,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import ru.vadmark.petproject.config.jwt.JwtFilter;
+import ru.vadmark.petproject.config.jwt.JWTAuthenticationFilter;
 
 /**
  * Author: Markitanov Vadim
@@ -17,7 +18,8 @@ import ru.vadmark.petproject.config.jwt.JwtFilter;
 @RequiredArgsConstructor
 @EnableWebSecurity/*(debug = true)*/
 // @EnableGlobalMethodSecurity(securedEnabled = true)
-public class VadmarkSecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     private static final String[] AUTH_WHITELIST = {
             "/",
             "/favicon.ico",
@@ -33,27 +35,33 @@ public class VadmarkSecurityConfig extends WebSecurityConfigurerAdapter {
             "/v3/api-docs"
     };
     private static final String[] ADMIN_WHITELIST = {"/admin", "/admin/**"};
-    private final JwtFilter jwtFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.
-//                sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().
+        http
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 //                exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and().
-        csrf().disable().
-                exceptionHandling().accessDeniedPage("/accessDenied").and().
-                authorizeRequests().
-                antMatchers(AUTH_WHITELIST).permitAll().
-                antMatchers(SWAGGER_WHITELIST).permitAll().
-                antMatchers("/registration").not().fullyAuthenticated().
-                antMatchers(ADMIN_WHITELIST).hasRole("ADMIN").
-                anyRequest().authenticated().and().
+                .csrf().disable()
+                .exceptionHandling().accessDeniedPage("/accessDenied").and()
+                .authorizeRequests()
+                .antMatchers(AUTH_WHITELIST).permitAll()
+                .antMatchers(SWAGGER_WHITELIST).permitAll()
+                .antMatchers("/registration").not().fullyAuthenticated()
+                .antMatchers(ADMIN_WHITELIST).hasRole("ADMIN")
+                .anyRequest().authenticated().and()
 
-                formLogin().loginPage("/login").defaultSuccessUrl("/").permitAll().and().
+                .formLogin(customize -> {
+                    customize.loginPage("/login");
+                    customize.defaultSuccessUrl("/settings");
+                    customize.permitAll();
+                })
 
-                logout().logoutSuccessUrl("/").permitAll().and().
+                .logout(customize -> {
+                    customize.logoutSuccessUrl("/");
+                    customize.permitAll();
+                })
 
-                addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JWTAuthenticationFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

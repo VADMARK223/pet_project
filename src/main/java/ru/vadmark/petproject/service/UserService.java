@@ -37,7 +37,7 @@ public class UserService {
     private final UserEntityRepository userRepository;
     private final RoleEntityRepository roleEntityRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
-    private final PetUserDetailsService petUserDetailsService;
+    private final UserDetailsServiceImpl petUserDetailsService;
 
     public boolean saveUser(UserForm userForm) {
         if (userRepository.findByUsername(userForm.getUsername()) != null) {
