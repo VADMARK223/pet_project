@@ -5,7 +5,7 @@
 </#macro>
 
 <#macro article>
-    Body
+    <p style="color: red">WARN: Implement article macro.</p>
 </#macro>
 
 <#macro display_page>
