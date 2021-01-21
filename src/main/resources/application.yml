@@ -51,5 +51,6 @@ jwt:
 
 rest:
   svelte:
+    url: http://localhost:5000
     base:
       path: /svelte

@@ -98,4 +98,9 @@ public class SvelteController {
         userEntity.setUsername("Vadim");
         return ResponseEntity.ok(userEntity);
     }
+
+    @GetMapping("/settings")
+    public ResponseEntity<String> settings() {
+        return ResponseEntity.ok("Settings");
+    }
 }

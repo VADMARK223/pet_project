@@ -1,11 +1,7 @@
 import api from "./api"
 
 export const getUserList = async () => {
-    try {
-        return await api.get("/admin");
-    } catch (error) {
-        console.log(error);
-    }
+    return await api.get("/admin");
 }
 
 export const deleteUser = async (id) => {

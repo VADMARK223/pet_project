@@ -1,7 +1,10 @@
 package ru.vadmark.petproject.config.jwt;
 
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -13,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 /**
@@ -24,6 +28,8 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @RequiredArgsConstructor
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
     private final UserDetailsServiceImpl userDetailsService;
+    @Value("${rest.svelte.url}")
+    public String clientUrl;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain chain) throws IOException, ServletException {
@@ -33,10 +39,16 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
         log.info("Token: " + token);
-        String username = JWTUtil.getSubjectByToken(token);
-        log.info("Username from token: {}.", username);
-        userDetailsService.authenticationUser(username);
-        chain.doFilter(request, response);
+        try {
+            String username = JWTUtil.getSubjectByToken(token);
+            log.info("Username from token: {}.", username);
+            userDetailsService.authenticationUser(username);
+            chain.doFilter(request, response);
+        } catch (JWTDecodeException jwtDecodeException) {
+            log.error("Jwt decoder error: {}.", jwtDecodeException.getMessage());
+            response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, clientUrl);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "JWTDecodeException:" + jwtDecodeException.getMessage());
+        }
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
