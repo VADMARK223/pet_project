@@ -3,7 +3,9 @@
     import Router from './app/routing/Router.svelte';
 </script>
 
-<header><h2>Svelte</h2></header>
+<header>
+    <h2><a href="/#/home">Svelte</a></h2>
+</header>
 <nav>
     <Sidenav/>
 </nav>

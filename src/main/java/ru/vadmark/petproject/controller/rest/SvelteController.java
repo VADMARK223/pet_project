@@ -91,7 +91,11 @@ public class SvelteController {
     }
 
     @GetMapping("/test")
-    public String test() {
-        return "test";
+    public ResponseEntity<UserEntity> test(@RequestParam("id") String id) {
+        log.info("id: {}.", id);
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId(999L);
+        userEntity.setUsername("Vadim");
+        return ResponseEntity.ok(userEntity);
     }
 }

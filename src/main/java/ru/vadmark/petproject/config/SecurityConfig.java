@@ -19,13 +19,14 @@ import ru.vadmark.petproject.config.jwt.JWTAuthenticationFilter;
 // @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String[] AUTH_WHITELIST = {
+    private static final String[] WHITELIST = {
             "/",
             "/favicon.ico",
             "/images/**",
             "/css/**",
             "/svelte/**",
-            "/ws"
+            "/ws",
+            "/login/failure"
     };
     private static final String[] SWAGGER_WHITELIST = {
             "/documentation/swagger-ui/",
@@ -42,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .exceptionHandling().accessDeniedPage("/accessDenied").and()
                 .authorizeRequests()
-                .antMatchers(AUTH_WHITELIST).permitAll()
+                .antMatchers(WHITELIST).permitAll()
                 .antMatchers(SWAGGER_WHITELIST).permitAll()
                 .antMatchers("/registration").not().fullyAuthenticated()
                 .antMatchers(ADMIN_WHITELIST).hasRole("ADMIN")
@@ -50,7 +51,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .formLogin(customize -> {
                     customize.loginPage("/login");
-                    customize.defaultSuccessUrl("/settings");
                     customize.permitAll();
                 })
 
@@ -66,12 +66,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    /*@Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-        authenticationProvider.setUserDetailsService(...);
-        return authenticationProvider;
-    }*/
 }

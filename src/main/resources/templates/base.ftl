@@ -19,20 +19,24 @@
     </head>
     <body>
     <header>
-        <h2>Freemarker</h2>
+        <h2><a href="/">Freemarker</a></h2>
+        <@sec.authorize access="isAuthenticated()">
+            <h4>Welcome back, <@sec.authentication property="name"/>.</h4>
+        </@sec.authorize>
     </header>
 
     <nav class="base-nav">
-        <a href="/">Home</a><br>
         <@sec.authorize access="!isAuthenticated()">
             <a href="/login">Sing in</a><br>
+            <a href="/registration">Registration</a><br>
         </@sec.authorize>
         <@sec.authorize access="isAuthenticated()">
             <a href="/logout">Log out</a><br>
+            <@sec.authorize access="hasRole('ADMIN')">
+                <a href="/admin">Admin</a><br>
+            </@sec.authorize>
+            <a href="/settings">Settings</a><br>
         </@sec.authorize>
-        <a href="/registration">Registration</a><br>
-        <a href="/admin">Admin</a><br>
-        <a href="/settings">Settings</a><br>
     </nav>
     <article class="base-article">
         <@article/>

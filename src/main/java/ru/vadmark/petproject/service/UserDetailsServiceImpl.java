@@ -24,8 +24,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     // @Transactional if roles lazy load.
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("Load user by username.");
         UserEntity user = userRepository.findByUsername(username);
+        log.info("Load user by username: '{}'. User: '{}'.", username, user);
 
         if (user == null) {
             throw new UsernameNotFoundException(String.format("User '%s' not found.", username));

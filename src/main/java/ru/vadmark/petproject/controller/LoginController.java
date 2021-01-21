@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,11 +20,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class LoginController {
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(Model model, @RequestParam(value = "error", required = false) Object error) {
-        if (error != null) {
-            model.addAttribute("error", "Invalid Username or password.");
-        }
+//    @RequestMapping(value = "/login", method = RequestMethod.GET)
+//    public String login() {
+//        return "login";
+//    }
+
+    @GetMapping("/login/failure")
+    public String failure(Model model, @RequestParam String error) {
+        model.addAttribute("error", error);
         return "login";
     }
 }
