@@ -47,7 +47,7 @@ registration:
     length: 1
 
 jwt:
-  secret: sdfkgjdfgsdkfj
+  secret: sdfivisv3iufhviuvhu8hfgisuhga
 
 rest:
   svelte:

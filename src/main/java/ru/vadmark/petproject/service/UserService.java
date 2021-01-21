@@ -37,7 +37,7 @@ public class UserService {
     private final UserEntityRepository userRepository;
     private final RoleEntityRepository roleEntityRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
-    private final UserDetailsServiceImpl petUserDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
 
     public boolean saveUser(UserForm userForm) {
         if (userRepository.findByUsername(userForm.getUsername()) != null) {
@@ -58,10 +58,7 @@ public class UserService {
         log.info("Save user.");
 
         if (autologin) {
-            log.info("Autologin. ");
-            UserDetails userDetails = petUserDetailsService.loadUserByUsername(user.getUsername());
-            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            userDetailsService.authenticationUser(user.getUsername());
         }
 
         return true;
