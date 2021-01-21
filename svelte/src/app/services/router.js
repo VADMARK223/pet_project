@@ -3,8 +3,8 @@ import {writable} from "svelte/store";
 export const hash = writable('home');
 
 function getUrlFromHash() {
-    return location.hash.length >= 2
-        ? location.hash.substring(2)
+    return location.hash.length >= 1
+        ? location.hash.substring(1)
         : '';
 }
 

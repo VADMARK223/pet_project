@@ -7,13 +7,14 @@
     import AdminPage from '../pages/Admin.svelte';
     import SettingsPage from '../pages/Settings.svelte';
     import TestPage from '../pages/Test.svelte';
-    import NotFoundPage from '../pages/NotFound.svelte';
+    import Error from '../pages/Error.svelte';
 
     let value = HomePage;
 
     hash.subscribe(val => {
         console.log("Hash = " + val);
         switch (val) {
+            case '':
             case 'home':
                 value = HomePage;
                 break;
@@ -36,7 +37,7 @@
                 value = TestPage;
                 break;
             default:
-                value = NotFoundPage;
+                value = Error;
         }
     })
 </script>

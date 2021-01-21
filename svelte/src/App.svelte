@@ -4,7 +4,7 @@
 </script>
 
 <header>
-    <h2><a href="/#/home">Svelte</a></h2>
+    <h2><a href="/">Svelte</a></h2>
 </header>
 <nav>
     <Sidenav/>
