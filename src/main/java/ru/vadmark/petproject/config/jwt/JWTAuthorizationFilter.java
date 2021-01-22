@@ -1,14 +1,15 @@
 package ru.vadmark.petproject.config.jwt;
 
-import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import ru.vadmark.petproject.config.property.ProjectProperties;
 import ru.vadmark.petproject.service.UserDetailsServiceImpl;
 
 import javax.servlet.FilterChain;
@@ -23,27 +24,23 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
  * @author Markitanov Vadim
  * @since 20.01.2021
  */
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
     private final UserDetailsServiceImpl userDetailsService;
-    private final ProjectProperties properties;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain chain) throws IOException, ServletException {
-        log.info("Do filter internal: {}.", request.getRequestURI());
+        String origin = request.getHeader(HttpHeaders.ORIGIN);
+        log.info("Origin: {}. Request URI: {}. Method:{}.", origin, request.getRequestURI(), request.getMethod());
 
-        String token = getTokenFromRequest(request);
+        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, origin);
+        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "OPTIONS, POST, GET, DELETE");
+        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "Origin, X-Requested-With, Content-Type, Accept, Authorization");
 
-        if (request.getRequestURI().startsWith("/svelte")) {
-            log.info("Request from svelte. Token: {}", token);
-            if (token == null) {
-                sendErrorResponse(response, "Token not found.");
-                return;
-            }
-        }
-
+        final String token = getTokenFromRequest(request);
         if (token == null) {
             chain.doFilter(request, response);
             return;
@@ -53,16 +50,12 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             String username = JWTUtil.getSubjectByToken(token);
             log.info("Username from token: {}.", username);
             userDetailsService.authenticationUser(username);
+        } catch (JWTVerificationException jwtException) {
+            log.error("Jwt decoder error: {}.", jwtException.getMessage());
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "JWT exception:" + jwtException.getMessage());
+        } finally {
             chain.doFilter(request, response);
-        } catch (JWTDecodeException jwtDecodeException) {
-            log.error("Jwt decoder error: {}.", jwtDecodeException.getMessage());
-            sendErrorResponse(response, "JWTDecodeException:" + jwtDecodeException.getMessage());
         }
-    }
-
-    private void sendErrorResponse(HttpServletResponse response, String msg) throws IOException {
-        response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, properties.getClientUrl());
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, msg);
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
