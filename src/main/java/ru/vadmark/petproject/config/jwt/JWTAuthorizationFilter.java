@@ -32,7 +32,18 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain chain) throws IOException, ServletException {
+        log.info("Do filter internal: {}.", request.getRequestURI());
+
         String token = getTokenFromRequest(request);
+
+        if (request.getRequestURI().startsWith("/svelte")) {
+            log.info("Request from svelte. Token: {}", token);
+            if (token == null) {
+                sendErrorResponse(response, "Token not found.");
+                return;
+            }
+        }
+
         if (token == null) {
             chain.doFilter(request, response);
             return;
@@ -45,9 +56,13 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);
         } catch (JWTDecodeException jwtDecodeException) {
             log.error("Jwt decoder error: {}.", jwtDecodeException.getMessage());
-            response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, properties.getClientUrl());
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "JWTDecodeException:" + jwtDecodeException.getMessage());
+            sendErrorResponse(response, "JWTDecodeException:" + jwtDecodeException.getMessage());
         }
+    }
+
+    private void sendErrorResponse(HttpServletResponse response, String msg) throws IOException {
+        response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, properties.getClientUrl());
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, msg);
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
