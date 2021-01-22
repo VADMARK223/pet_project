@@ -7,7 +7,7 @@ const axiosAPI = axios.create({
 const apiRequest = (method, url, request) => {
     const headers = {
         'Content-Type':'application/json',
-        'Authorization':'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhIiwiaWQiOjEsImV4cCI6MTYxMjQ3MjQwMH0.00fmyZ2keSjLow47jbtkmTYc8G-sHioi24obOckF-iRgPPdpXqej3jG15B7NJJGcyidv-MMA3gy3ykkmjFWVqg'
+        'Authorization':'Bearer 1eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhIiwiaWQiOjEsImV4cCI6MTYxMjQ3MjQwMH0.00fmyZ2keSjLow47jbtkmTYc8G-sHioi24obOckF-iRgPPdpXqej3jG15B7NJJGcyidv-MMA3gy3ykkmjFWVqg'
     };
 
     return axiosAPI({

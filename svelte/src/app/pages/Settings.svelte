@@ -1,6 +1,7 @@
 <script>
     import {onMount} from 'svelte';
     import {getSettings} from "../services/settings";
+    import {hash} from "../services/router";
 
     let settings = "";
 
@@ -8,7 +9,8 @@
         try {
             settings = await getSettings();
         } catch (e) {
-            settings = e.response.data.message;
+            console.log("Error: " + e.response.data.message)
+            hash.set("login");
         }
     })
 </script>
