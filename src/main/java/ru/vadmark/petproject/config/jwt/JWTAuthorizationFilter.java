@@ -3,12 +3,12 @@ package ru.vadmark.petproject.config.jwt;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import ru.vadmark.petproject.config.property.ProjectProperties;
 import ru.vadmark.petproject.service.UserDetailsServiceImpl;
 
 import javax.servlet.FilterChain;
@@ -28,8 +28,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @RequiredArgsConstructor
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
     private final UserDetailsServiceImpl userDetailsService;
-    @Value("${rest.svelte.url}")
-    public String clientUrl;
+    private final ProjectProperties properties;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain chain) throws IOException, ServletException {
@@ -46,7 +45,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);
         } catch (JWTDecodeException jwtDecodeException) {
             log.error("Jwt decoder error: {}.", jwtDecodeException.getMessage());
-            response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, clientUrl);
+            response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, properties.getClientUrl());
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "JWTDecodeException:" + jwtDecodeException.getMessage());
         }
     }

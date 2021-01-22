@@ -2,12 +2,9 @@ package ru.vadmark.petproject.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.vadmark.petproject.config.property.ProjectProperties;
 import ru.vadmark.petproject.entity.RoleEntity;
 import ru.vadmark.petproject.entity.UserEntity;
 import ru.vadmark.petproject.repository.RoleEntityRepository;
@@ -25,19 +22,11 @@ import ru.vadmark.petproject.repository.model.UserForm;
 public class UserService {
     public static final String ROLE_USER = "ROLE_USER";
 
-    @Value("${registration.username.length: 2}")
-    private short usernameLength;
-
-    @Value("${registration.password.length: 8}")
-    private short passwordLength;
-
-    @Value("${registration.autologin: false}")
-    private boolean autologin;
-
     private final UserEntityRepository userRepository;
     private final RoleEntityRepository roleEntityRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
     private final UserDetailsServiceImpl userDetailsService;
+    private final ProjectProperties properties;
 
     public boolean saveUser(UserForm userForm) {
         if (userRepository.findByUsername(userForm.getUsername()) != null) {
@@ -57,7 +46,7 @@ public class UserService {
         userRepository.save(user);
         log.info("Save user.");
 
-        if (autologin) {
+        if (properties.getAutologin()) {
             userDetailsService.authenticationUser(user.getUsername());
         }
 
@@ -89,12 +78,12 @@ public class UserService {
             return "Confirm password must not be empty.";
         }
 
-        if (registrationForm.getUsername().length() < usernameLength) {
-            return String.format("Username is too short (minimum is %d characters).", usernameLength);
+        if (registrationForm.getUsername().length() < properties.getMinUsernameLength()) {
+            return String.format("Username is too short (minimum is %d characters).", properties.getMinUsernameLength());
         }
 
-        if (registrationForm.getPassword().length() < passwordLength) {
-            return String.format("Minimum length password is %d characters.", passwordLength);
+        if (registrationForm.getPassword().length() < properties.getMinPasswordLength()) {
+            return String.format("Minimum length password is %d characters.", properties.getMinPasswordLength());
         }
 
         if (!registrationForm.getPassword().equals(registrationForm.getConfirmPassword())) {

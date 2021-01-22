@@ -1,19 +1,20 @@
 package ru.vadmark.petproject.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import ru.vadmark.petproject.config.property.ProjectProperties;
 
 /**
  * Author: Markitanov Vadim
  * Date: 07.01.2021
  */
+@RequiredArgsConstructor
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-    @Value("${rest.svelte.url}")
-    public String clientUrl;
+    private final ProjectProperties properties;
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -26,6 +27,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/svelte/**")
                 .allowedMethods("POST", "GET", "DELETE")
-                .allowedOrigins(clientUrl);
+                .allowedOrigins(properties.getClientUrl());
     }
 }

@@ -39,18 +39,11 @@ springfox:
       v2:
         use-model-v3: true
 
-registration:
+pet-project:
   autologin: true
-  username:
-    length: 1
-  password:
-    length: 1
+  min-username-length: 1
+  min-password-length: 1
+  client-url: http://localhost:5000
 
 jwt:
   secret: sdfivisv3iufhviuvhu8hfgisuhga
-
-rest:
-  svelte:
-    url: http://localhost:5000
-    base:
-      path: /svelte

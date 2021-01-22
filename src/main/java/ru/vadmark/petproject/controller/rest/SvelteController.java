@@ -29,7 +29,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 @RestController
-@RequestMapping("${rest.svelte.base.path}")
+@RequestMapping("/svelte")
 public class SvelteController {
     private final UserEntityRepository userRepository;
     private final UserService userService;
