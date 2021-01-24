@@ -1,7 +1,6 @@
 package ru.vadmark.petproject.config.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -42,7 +41,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        log.info("request.getHeader(HttpHeaders.CONTENT_TYPE): {}.", request.getHeader(HttpHeaders.CONTENT_TYPE));
         if (MediaType.APPLICATION_JSON_VALUE.equals(request.getHeader(HttpHeaders.CONTENT_TYPE))) {
             try {
                 userForm = new ObjectMapper().readValue(request.getInputStream(), UserForm.class);

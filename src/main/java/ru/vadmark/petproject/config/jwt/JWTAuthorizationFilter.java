@@ -30,8 +30,11 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain chain) throws IOException, ServletException {
-        String origin = request.getHeader(HttpHeaders.ORIGIN);
-        log.info("Origin: {}. Request URI: {}. Method:{}.", origin, request.getRequestURI(), request.getMethod());
+        final String origin = request.getHeader(HttpHeaders.ORIGIN);
+        final String uri = request.getRequestURI();
+        if (!uri.startsWith("/js") && !uri.startsWith("/css")) {
+            log.info("Origin: {}. Request URI: {}. Method:{}.", origin, uri, request.getMethod());
+        }
 
         response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, origin);
         response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "OPTIONS, POST, GET, DELETE");
