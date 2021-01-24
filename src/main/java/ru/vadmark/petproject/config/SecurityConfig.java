@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.vadmark.petproject.config.jwt.JWTAuthenticationFilter;
+import ru.vadmark.petproject.config.jwt.JWTSecurityContextRepository;
 
 /**
  * Author: Markitanov Vadim
@@ -19,15 +20,17 @@ import ru.vadmark.petproject.config.jwt.JWTAuthenticationFilter;
 @EnableWebSecurity/*(debug = true)*/
 // @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
+    private final JWTSecurityContextRepository securityContextRepository;
     private static final String[] WHITELIST = {
             "/",
             "/favicon.ico",
             "/images/**",
             "/css/**",
+            "/js/**",
             "/svelte/**",
             "/ws",
-            "/login/failure"
+            "/login/failure",
+            "/auth"
     };
     private static final String[] SWAGGER_WHITELIST = {
             "/documentation/swagger-ui/",
@@ -40,7 +43,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .securityContext().securityContextRepository(securityContextRepository).and()
                 .csrf().disable()
                 .exceptionHandling().accessDeniedPage("/accessDenied").and()
                 .authorizeRequests()

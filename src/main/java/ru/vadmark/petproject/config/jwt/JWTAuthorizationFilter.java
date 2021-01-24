@@ -3,8 +3,6 @@ package ru.vadmark.petproject.config.jwt;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -24,7 +22,6 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
  * @author Markitanov Vadim
  * @since 20.01.2021
  */
-@Order(Ordered.HIGHEST_PRECEDENCE)
 @Slf4j
 @Component
 @RequiredArgsConstructor

@@ -16,6 +16,43 @@
         <link rel="stylesheet" href="/css/bootstrap.min.css">
         <link rel="stylesheet" href="/css/freemarker.css">
         <link rel="shortcut icon" href="/images/freemarker.ico" type="image/x-icon">
+        <script src="/js/axios.min.js"></script>
+        <script>
+            const jwt = localStorage.getItem("BEARER_JWT");
+            // console.log("jwt: " + jwt);
+            const headers = {
+                'Content-Type': 'application/json'
+                // 'Authorization': jwt
+            }
+            const axiosAPI = axios.create({
+                headers
+            });
+        </script>
+
+        <#--<script>
+            const jwt = localStorage.getItem("BEARER_JWT");
+            // console.log("jwt: " + jwt);
+            const headers = {
+                'Content-Type': 'application/json'
+                // 'Authorization': jwt
+            }
+            const axiosAPI = axios.create({
+                headers
+            });
+            window.addEventListener("load", function () {
+                console.log("All resources loading!");
+                axiosAPI.post('/auth').then(res => {
+                    console.log("Res: " + res.data);
+                    console.log("Header Authorization: " + res.headers.authorization)
+                    //localStorage.setItem("BEARER_JWT", res.data);
+                })
+                    .catch(function (error) {
+                        console.log("Error: " + error)
+                        // localStorage.setItem("TEST", "VADMARK");
+                        // window.location.href = "/login";
+                    });
+            })
+        </script>-->
     </head>
     <body>
     <header>
