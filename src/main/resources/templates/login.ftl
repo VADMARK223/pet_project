@@ -4,7 +4,7 @@
 <#macro page_head>
     <title>Index</title>
 
-    <script>
+    <#--<script>
         window.addEventListener("load", function () {
             const loginForm = document.getElementById("login-form");
             loginForm.addEventListener("submit", submitHandler);
@@ -25,15 +25,15 @@
                 });
             }
         });
-    </script>
+    </script>-->
 </#macro>
 
 <#macro article>
     <#if user??>
         Hello, ${user.username}.
     <#else>
-    <#--        <form action="/login" method="post">-->
-        <form id="login-form">
+            <form action="/login" method="post">
+<#--        <form id="login-form">-->
             <#if error??>
                 <p style="color: red">${error}</p>
             </#if>
