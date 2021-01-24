@@ -4,11 +4,11 @@ import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Collections;
 
 /**
  * Author: Markitanov Vadim
@@ -19,15 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Slf4j
 @RequiredArgsConstructor
 public class LoginController {
-
-//    @RequestMapping(value = "/login", method = RequestMethod.GET)
-//    public String login() {
-//        return "login";
-//    }
-
     @GetMapping("/login/failure")
-    public String failure(Model model, @RequestParam String error) {
-        model.addAttribute("error", error);
-        return "login";
+    public ModelAndView failure(@RequestParam String error) {
+        return new ModelAndView("login", Collections.singletonMap("error", error));
     }
 }

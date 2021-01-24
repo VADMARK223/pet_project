@@ -4,18 +4,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 import ru.vadmark.petproject.repository.model.RegistrationForm;
-import ru.vadmark.petproject.repository.model.UserForm;
 import ru.vadmark.petproject.service.UserService;
 
-import javax.validation.Valid;
+import java.util.Collections;
 
 /**
  * Author: Markitanov Vadim
@@ -29,23 +26,21 @@ public class RegistrationController {
     private final UserService userService;
 
     @GetMapping("/registration")
-    public String registration(Model model) {
-        model.addAttribute("registrationForm", createCustomUser());
-        return "registration";
+    public ModelAndView registration() {
+        return new ModelAndView("registration", Collections.singletonMap("registrationForm", createCustomUser()));
     }
 
     @ApiOperation("Register a new user.")
     @PostMapping("/registration")
-    public String addUser(@ModelAttribute("registrationForm") RegistrationForm registrationForm, Model model) {
+    public ModelAndView addUser(@ModelAttribute("registrationForm") RegistrationForm registrationForm) {
         log.info("Registration form: {}.", registrationForm);
 
         String error = userService.registrationUser(registrationForm);
         if (error != null) {
-            model.addAttribute("error", error);
-            return "registration";
+            return new ModelAndView("registration", Collections.singletonMap("error", error));
         }
 
-        return "redirect:/";
+        return new ModelAndView("index");
     }
 
     private RegistrationForm createCustomUser() {

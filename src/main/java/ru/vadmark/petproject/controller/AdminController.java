@@ -5,15 +5,16 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 import ru.vadmark.petproject.entity.UserEntity;
 import ru.vadmark.petproject.repository.UserEntityRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,29 +32,25 @@ public class AdminController {
 
     @ApiOperation(notes = "Find all user in DB and return admin page.", value = "Get users list.")
     @GetMapping()
-    public String admin(Model model) {
-        ArrayList<UserEntity> users = userRepository.findAll();
-        model.addAttribute("users", users);
-        return "admin";
+    public ModelAndView admin() {
+        return new ModelAndView("admin", Collections.singletonMap("users", userRepository.findAll()));
     }
 
     @ApiOperation("Get user by id.")
     @GetMapping("/user/{id}")
-    public String getUser(@PathVariable long id, Model model) {
+    public ModelAndView getUser(@PathVariable long id) {
         Optional<UserEntity> optionalUser = userRepository.findById(id);
         List<UserEntity> users = new ArrayList<>();
         optionalUser.ifPresent(users::add);
-        model.addAttribute("users", users);
-        return "admin";
+        return new ModelAndView("admin", Collections.singletonMap("users", users));
     }
 
     @ApiOperation("Delete user by id.")
     @PostMapping("/user/{id}")
-    public String deleteUser(@PathVariable long id, Model model) {
+    public ModelAndView deleteUser(@PathVariable long id) {
         log.info("Delete user: {}.", id);
         Optional<UserEntity> optionalUser = userRepository.findById(id);
         optionalUser.ifPresent(userRepository::delete);
-        model.addAttribute("users", userRepository.findAll());
-        return "admin";
+        return admin();
     }
 }

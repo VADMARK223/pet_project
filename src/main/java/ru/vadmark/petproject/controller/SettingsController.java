@@ -5,12 +5,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.ModelAndView;
 import ru.vadmark.petproject.entity.UserEntity;
 import ru.vadmark.petproject.repository.model.AvatarForm;
 import ru.vadmark.petproject.service.UserService;
@@ -28,7 +28,6 @@ import java.util.Base64;
 @RequiredArgsConstructor
 @Controller
 public class SettingsController {
-
     @Bean
     public MultipartResolver multipartResolver() {
         CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
@@ -38,11 +37,10 @@ public class SettingsController {
         return commonsMultipartResolver;
     }
 
-
     private final UserService userService;
 
     @GetMapping("/settings")
-    public String settings(Model model, Principal principal) {
+    public ModelAndView settings(Principal principal) {
         byte[] rawAvatar = null;
 
         UserEntity userEntity = userService.getUserByUsername(principal.getName());
@@ -51,15 +49,14 @@ public class SettingsController {
         }
 
         String imgAsBase64 = rawAvatar == null ? "" : new String(Base64.getEncoder().encode(rawAvatar));
-        model.addAttribute("imgAsBase64", "data:image/jpeg;base64," + imgAsBase64);
-
-        model.addAttribute("avatarForm", new AvatarForm());
-
-        return "settings";
+        ModelAndView modelAndView = new ModelAndView("settings");
+        modelAndView.addObject("imgAsBase64", "data:image/jpeg;base64," + imgAsBase64);
+        modelAndView.addObject("avatarForm", new AvatarForm());
+        return modelAndView;
     }
 
     @PostMapping("/upload")
-    public String upload(Model model, @ModelAttribute("avatarForm") AvatarForm avatarForm, Principal principal) {
+    public ModelAndView upload(@ModelAttribute("avatarForm") AvatarForm avatarForm, Principal principal) {
         log.info("avatarForm: {}.", avatarForm);
 
         byte[] rawAvatar = null;
@@ -71,8 +68,9 @@ public class SettingsController {
             rawAvatar = userEntity.getAvatar();
         }
         String imgAsBase64 = rawAvatar == null ? "" : new String(Base64.getEncoder().encode(rawAvatar));
-        model.addAttribute("imgAsBase64", "data:image/jpeg;base64," + imgAsBase64);
-        model.addAttribute("avatarForm", avatarForm);
-        return "settings";
+        ModelAndView modelAndView = new ModelAndView("settings");
+        modelAndView.addObject("imgAsBase64", "data:image/jpeg;base64," + imgAsBase64);
+        modelAndView.addObject("avatarForm", avatarForm);
+        return modelAndView;
     }
 }

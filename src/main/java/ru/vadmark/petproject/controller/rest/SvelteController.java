@@ -10,13 +10,12 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.FilterChainProxy;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import ru.vadmark.petproject.controller.LoginController;
 import ru.vadmark.petproject.entity.UserEntity;
 import ru.vadmark.petproject.repository.UserEntityRepository;
 import ru.vadmark.petproject.repository.model.RegistrationForm;
@@ -44,6 +43,7 @@ public class SvelteController {
     private final UserService userService;
     private final UserDetailsServiceImpl userDetailsService;
     private final PasswordEncoder bCryptPasswordEncoder;
+    private final LoginController loginController;
 
     @PostMapping("/auth")
     public ResponseEntity<Boolean> auth(HttpServletRequest request, HttpServletResponse response,
@@ -97,7 +97,7 @@ public class SvelteController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<UserEntity> registration(@RequestBody RegistrationForm registrationForm) throws MethodArgumentNotValidException, NoSuchMethodException {
+    public ResponseEntity<String> registration(@RequestBody RegistrationForm registrationForm) throws MethodArgumentNotValidException, NoSuchMethodException {
         log.info("Registration form: {}.", registrationForm);
 
         String error = userService.registrationUser(registrationForm);
@@ -108,12 +108,8 @@ public class SvelteController {
             bindingResult.addError(objectError);
             throw new MethodArgumentNotValidException(methodParameter, bindingResult);
         }
-
-        UserEntity userEntity = new UserEntity();
-        userEntity.setId(999L);
-        userEntity.setUsername(registrationForm.getUsername());
-        userEntity.setPassword(registrationForm.getPassword());
-        return ResponseEntity.ok(userEntity);
+        error = userService.registrationUser(registrationForm);
+        return ResponseEntity.ok(error);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

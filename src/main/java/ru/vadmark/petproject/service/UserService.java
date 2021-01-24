@@ -29,7 +29,7 @@ public class UserService {
     private final ProjectProperties properties;
 
     public boolean saveUser(UserForm userForm) {
-        if (userRepository.findByUsername(userForm.getUsername()) != null) {
+        if (userRepository.findByUsername(userForm.getUsername()).isPresent()) {
             return false;
         }
 
