@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.FilterChainProxy;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -18,6 +21,7 @@ import ru.vadmark.petproject.entity.UserEntity;
 import ru.vadmark.petproject.repository.UserEntityRepository;
 import ru.vadmark.petproject.repository.model.RegistrationForm;
 import ru.vadmark.petproject.repository.model.UserForm;
+import ru.vadmark.petproject.service.UserDetailsServiceImpl;
 import ru.vadmark.petproject.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +42,8 @@ import java.util.Optional;
 public class SvelteController {
     private final UserEntityRepository userRepository;
     private final UserService userService;
-
+    private final UserDetailsServiceImpl userDetailsService;
+    private final PasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping("/auth")
     public ResponseEntity<Boolean> auth(HttpServletRequest request, HttpServletResponse response,
@@ -79,11 +84,16 @@ public class SvelteController {
     @PostMapping("/login")
     public ResponseEntity<UserEntity> login(@RequestBody @Valid UserForm userForm) {
         log.info("data: {}.", userForm);
-        UserEntity userEntity = new UserEntity();
-        userEntity.setId(999L);
-        userEntity.setUsername(userForm.getUsername());
-        userEntity.setPassword(userForm.getPassword());
-        return ResponseEntity.ok(userEntity);
+        //userDetailsService.authenticationUser(userForm.getUsername());
+        Optional<UserEntity> userEntity = userRepository.findByUsername(userForm.getUsername());
+        if (userEntity.isPresent() && bCryptPasswordEncoder.matches(userForm.getPassword(), userEntity.get().getPassword())) {
+            log.info("GOOD.");
+            //userDetailsService.authenticationUser(userForm.getUsername());
+        } else {
+            log.info("BAD.");
+        }
+
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/registration")

@@ -57,12 +57,8 @@ public class UserService {
         userRepository.save(userEntity);
     }
 
-    private UserEntity findUserEntityByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
-
     public UserEntity getUserByUsername(String username) {
-        return findUserEntityByUsername(username);
+        return userRepository.findByUsername(username).orElse(null);
     }
 
     public String registrationUser(RegistrationForm registrationForm) {

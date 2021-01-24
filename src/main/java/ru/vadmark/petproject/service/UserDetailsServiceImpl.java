@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import ru.vadmark.petproject.entity.UserEntity;
 import ru.vadmark.petproject.repository.UserEntityRepository;
 
+import java.util.Optional;
+
 /**
  * Author: Markitanov Vadim
  * Date: 04.01.2021
@@ -24,14 +26,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     // @Transactional if roles lazy load.
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByUsername(username);
-        log.info("Load user by username: '{}'. User: '{}'.", username, user);
-
-        if (user == null) {
+        Optional<UserEntity> user = userRepository.findByUsername(username);
+        if (user.isEmpty()) {
             throw new UsernameNotFoundException(String.format("User '%s' not found.", username));
         }
+        log.info("Load user by username: '{}'. UserEntity: '{}'.", username, user.get());
 
-        return user;
+        return user.get();
     }
 
     public void authenticationUser(String username) {

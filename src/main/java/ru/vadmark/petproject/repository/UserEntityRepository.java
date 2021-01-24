@@ -16,7 +16,7 @@ public interface UserEntityRepository extends CrudRepository<UserEntity, Integer
     @NonNull
     ArrayList<UserEntity> findAll();
 
-    UserEntity findByUsername(String value);
+    Optional<UserEntity> findByUsername(String value);
 
     Optional<UserEntity> findById(Long id);
 }
