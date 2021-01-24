@@ -6,6 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -17,6 +20,8 @@ import ru.vadmark.petproject.repository.model.RegistrationForm;
 import ru.vadmark.petproject.repository.model.UserForm;
 import ru.vadmark.petproject.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +38,30 @@ import java.util.Optional;
 public class SvelteController {
     private final UserEntityRepository userRepository;
     private final UserService userService;
+
+
+    @PostMapping("/auth")
+    public ResponseEntity<Boolean> auth(HttpServletRequest request, HttpServletResponse response,
+                                        @RequestHeader(value = "test", required = false) String test,
+                                        @RequestHeader(value = "Authorization", required = false) String authorization,
+                                        @RequestHeader(value = "Content-Type", required = false) String contentType,
+                                        @RequestBody(required = false) Object data) {
+        log.info(">>>>>>>>>>> " + data);
+        log.info("URI: " + request.getRequestURI());
+        log.info("Tets header: {}.", test);
+        log.info("Authorization header: {}.", authorization);
+        log.info("ContentType header: {}.", contentType);
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        response.addHeader(AUTHORIZATION, "vad");
+
+        if (authentication instanceof AnonymousAuthenticationToken) {
+            log.info("Is Anonymous.");
+            return ResponseEntity.ok(false);
+        } else {
+            log.info("User authentication!");
+            return ResponseEntity.ok(true);
+        }
+    }
 
     @GetMapping("/admin")
     public List<UserEntity> admin() {
