@@ -3,6 +3,7 @@ package ru.vadmark.petproject.config.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
@@ -16,6 +17,8 @@ import ru.vadmark.petproject.repository.model.UserForm;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -35,12 +38,32 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
 
+        super.setFilterProcessesUrl("/svelte/login");
+        /*final SavedRequestAwareAuthenticationSuccessHandler authenticationSuccessHandler = new SavedRequestAwareAuthenticationSuccessHandler();
+        authenticationSuccessHandler.setDefaultTargetUrl("/settings");
+        authenticationSuccessHandler.setAlwaysUseDefaultTargetUrl(false);*/
         super.setAuthenticationSuccessHandler(new SimpleUrlAuthenticationSuccessHandler("/settings"));
         super.setAuthenticationFailureHandler(new AuthFailureHandler());
     }
 
     @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse resp = (HttpServletResponse) response;
+        if (HttpMethod.OPTIONS.matches(req.getMethod())) {
+            log.info("Skip option for {}.", req.getRequestURI());
+            resp.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, req.getHeader(HttpHeaders.ORIGIN));
+            resp.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "OPTIONS, POST, GET, DELETE");
+            resp.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+            chain.doFilter(request, response);
+        } else {
+            super.doFilter(request, response, chain);
+        }
+    }
+
+    @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+
         if (MediaType.APPLICATION_JSON_VALUE.equals(request.getHeader(HttpHeaders.CONTENT_TYPE))) {
             try {
                 userForm = new ObjectMapper().readValue(request.getInputStream(), UserForm.class);
@@ -48,7 +71,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 e.printStackTrace();
             }
         }
-
         return super.attemptAuthentication(request, response);
     }
 
@@ -66,6 +88,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     protected String obtainUsername(HttpServletRequest request) {
+        log.info("request.getMethod(): {}.", request.getMethod());
+
         if (userForm != null && MediaType.APPLICATION_JSON_VALUE.equals(request.getHeader(HttpHeaders.CONTENT_TYPE))) {
             return userForm.getUsername();
         }

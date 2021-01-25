@@ -9,8 +9,7 @@
     <#if user??>
         Hello, ${user.username}.
     <#else>
-<#--            <form action="/api/v1/login" method="post">-->
-            <form action="/login" method="post">
+            <form action="/svelte/login" method="post">
             <#if error??>
                 <p style="color: red">${error}</p>
             </#if>

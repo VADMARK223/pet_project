@@ -40,7 +40,7 @@ public class RegistrationController {
             return new ModelAndView("registration", Collections.singletonMap("error", error));
         }
 
-        return new ModelAndView("index");
+        return new ModelAndView("redirect:/");
     }
 
     private RegistrationForm createCustomUser() {

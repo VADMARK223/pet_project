@@ -81,7 +81,7 @@ public class SvelteController {
         optionalUser.ifPresent(userRepository::delete);
     }
 
-    @PostMapping("/login")
+    /*@PostMapping("/login")
     public ResponseEntity<UserEntity> login(@RequestBody @Valid UserForm userForm) {
         log.info("data: {}.", userForm);
         //userDetailsService.authenticationUser(userForm.getUsername());
@@ -94,7 +94,7 @@ public class SvelteController {
         }
 
         return ResponseEntity.ok().build();
-    }
+    }*/
 
     @PostMapping("/registration")
     public ResponseEntity<String> registration(@RequestBody RegistrationForm registrationForm) throws MethodArgumentNotValidException, NoSuchMethodException {

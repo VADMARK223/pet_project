@@ -32,7 +32,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain chain) throws IOException, ServletException {
         final String origin = request.getHeader(HttpHeaders.ORIGIN);
         final String uri = request.getRequestURI();
-        if (!uri.startsWith("/js") && !uri.startsWith("/css")) {
+        if (!uri.startsWith("/js") && !uri.startsWith("/css") && !uri.startsWith("/images")) {
             log.info("Origin: {}. Request URI: {}. Method:{}.", origin, uri, request.getMethod());
         }
 

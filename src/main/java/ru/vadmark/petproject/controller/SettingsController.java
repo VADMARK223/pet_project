@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +40,7 @@ public class SettingsController {
 
     private final UserService userService;
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/settings")
     public ModelAndView settings(Principal principal) {
         byte[] rawAvatar = null;
