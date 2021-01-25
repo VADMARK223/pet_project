@@ -17,7 +17,7 @@ import java.io.IOException;
 public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        log.info("onAuthenticationFailure: " + exception.getLocalizedMessage());
+        log.info("Authentication failure: " + exception.getLocalizedMessage());
         final String message = "Invalid username or password.";
         super.setDefaultFailureUrl("/login/failure?error=" + message);
         super.onAuthenticationFailure(request, response, exception);

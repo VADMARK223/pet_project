@@ -2,7 +2,6 @@ package ru.vadmark.petproject.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.vadmark.petproject.config.jwt.JWTAuthenticationFilter;
 import ru.vadmark.petproject.config.jwt.JWTSecurityContextRepository;
+import ru.vadmark.petproject.config.property.ProjectProperties;
 
 /**
  * Author: Markitanov Vadim
@@ -23,6 +23,7 @@ import ru.vadmark.petproject.config.jwt.JWTSecurityContextRepository;
 @EnableWebSecurity/*(debug = true)*/
 // @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private final ProjectProperties properties;
     private final JWTSecurityContextRepository securityContextRepository;
     private static final String[] WHITELIST = {
             "/",
@@ -73,7 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     customize.permitAll();
                 })
 
-                .addFilterBefore(new JWTAuthenticationFilter(authenticationManagerBean()), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JWTAuthenticationFilter(authenticationManagerBean(), properties), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

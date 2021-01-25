@@ -8,15 +8,14 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
+import ru.vadmark.petproject.config.property.ProjectProperties;
 import ru.vadmark.petproject.entity.UserEntity;
 import ru.vadmark.petproject.handler.AuthFailureHandler;
-import ru.vadmark.petproject.handler.AuthSuccessHandler;
+import ru.vadmark.petproject.handler.CustomRedirectStrategy;
 import ru.vadmark.petproject.repository.model.UserForm;
-import ru.vadmark.petproject.util.LogUtil;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -38,11 +37,13 @@ import static ru.vadmark.petproject.config.jwt.JWTUtil.BEARER_;
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private UserForm userForm = null;
 
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, ProjectProperties properties) {
         super(authenticationManager);
 
         super.setFilterProcessesUrl("/svelte/login");
-        super.setAuthenticationSuccessHandler(new AuthSuccessHandler());
+        final SimpleUrlAuthenticationSuccessHandler authSuccessHandler = new SimpleUrlAuthenticationSuccessHandler("/settings");
+        authSuccessHandler.setRedirectStrategy(new CustomRedirectStrategy(properties));
+        super.setAuthenticationSuccessHandler(authSuccessHandler);
         super.setAuthenticationFailureHandler(new AuthFailureHandler());
     }
 
