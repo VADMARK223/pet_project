@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.vadmark.petproject.service.UserDetailsServiceImpl;
-import ru.vadmark.petproject.util.LogUtil;
+import ru.vadmark.petproject.util.ServletResponseUtil;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -31,18 +31,12 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain chain) throws IOException, ServletException {
-        final String origin = request.getHeader(HttpHeaders.ORIGIN);
         final String uri = request.getRequestURI();
         if (!uri.startsWith("/js") && !uri.startsWith("/css") && !uri.startsWith("/images")) {
-            log.info("Origin: {}. Request URI: {}. Method:{}.", origin, uri, request.getMethod());
-//            LogUtil.logHeaders(response);
+            log.info("Origin: {}. Request URI: {}. Method:{}.", request.getHeader(HttpHeaders.ORIGIN), uri, request.getMethod());
         }
 
-        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, origin);
-        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "OPTIONS, POST, GET, DELETE");
-        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-
-//        LogUtil.logHeaders(response);
+        ServletResponseUtil.setHeaders(request, response);
 
         final String token = getTokenFromRequest(request);
         if (token == null) {

@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
-import springfox.documentation.annotations.ApiIgnore;
 
 import javax.persistence.*;
 import java.util.Set;

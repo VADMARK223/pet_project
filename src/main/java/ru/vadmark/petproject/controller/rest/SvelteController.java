@@ -19,13 +19,11 @@ import ru.vadmark.petproject.controller.LoginController;
 import ru.vadmark.petproject.entity.UserEntity;
 import ru.vadmark.petproject.repository.UserEntityRepository;
 import ru.vadmark.petproject.repository.model.RegistrationForm;
-import ru.vadmark.petproject.repository.model.UserForm;
 import ru.vadmark.petproject.service.UserDetailsServiceImpl;
 import ru.vadmark.petproject.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,7 +51,7 @@ public class SvelteController {
                                         @RequestBody(required = false) Object data) {
         log.info(">>>>>>>>>>> " + data);
         log.info("URI: " + request.getRequestURI());
-        log.info("Tets header: {}.", test);
+        log.info("Test header: {}.", test);
         log.info("Authorization header: {}.", authorization);
         log.info("ContentType header: {}.", contentType);
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

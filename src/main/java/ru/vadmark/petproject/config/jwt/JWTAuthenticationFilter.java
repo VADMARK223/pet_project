@@ -16,6 +16,7 @@ import ru.vadmark.petproject.entity.UserEntity;
 import ru.vadmark.petproject.handler.AuthFailureHandler;
 import ru.vadmark.petproject.handler.CustomRedirectStrategy;
 import ru.vadmark.petproject.repository.model.UserForm;
+import ru.vadmark.petproject.util.ServletResponseUtil;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -50,17 +51,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse resp = (HttpServletResponse) response;
+        ServletResponseUtil.setHeaders(request, response);
+
         if (HttpMethod.OPTIONS.matches(req.getMethod())) {
             log.info("Skip option for {}.", req.getRequestURI());
-            resp.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, req.getHeader(HttpHeaders.ORIGIN));
-            resp.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "OPTIONS, POST, GET, DELETE");
-            resp.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "Origin, X-Requested-With, Content-Type, Accept, Authorization");
             chain.doFilter(request, response);
         } else {
-            resp.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, req.getHeader(HttpHeaders.ORIGIN));
-            resp.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "OPTIONS, POST, GET, DELETE");
-            resp.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "Origin, X-Requested-With, Content-Type, Accept, Authorization");
             super.doFilter(request, response, chain);
         }
     }
