@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.vadmark.petproject.service.UserDetailsServiceImpl;
+import ru.vadmark.petproject.util.LogUtil;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -34,11 +35,14 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         final String uri = request.getRequestURI();
         if (!uri.startsWith("/js") && !uri.startsWith("/css") && !uri.startsWith("/images")) {
             log.info("Origin: {}. Request URI: {}. Method:{}.", origin, uri, request.getMethod());
+//            LogUtil.logHeaders(response);
         }
 
         response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, origin);
         response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "OPTIONS, POST, GET, DELETE");
         response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+
+//        LogUtil.logHeaders(response);
 
         final String token = getTokenFromRequest(request);
         if (token == null) {

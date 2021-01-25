@@ -40,7 +40,7 @@ public class SettingsController {
 
     private final UserService userService;
 
-    @CrossOrigin(origins = "*")
+//    @CrossOrigin(origins = "*")
     @GetMapping("/settings")
     public ModelAndView settings(Principal principal) {
         byte[] rawAvatar = null;

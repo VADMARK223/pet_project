@@ -1,6 +1,7 @@
 logging:
   level:
-    org.springframefork: INFO
+    root: INFO
+    org.springframefork.web: DEBUG
     springfox.documentation: INFO
   file:
     name: log/application.log
