@@ -3,19 +3,21 @@
     import Router from './app/routing/Router.svelte';
     import {onMount} from 'svelte';
     import {auth} from "./app/services/auth";
-    import {authenticate} from "./app/services/state";
     import {user} from "./app/services/state";
+    import jwt_decode from "jwt-decode";
 
     onMount(async () => {
-        const result = await auth("Hello");
-        console.log("On mount: " + result);
-        authenticate.set(result);
+        const result = await auth();
+        if (result) {
+            const token = localStorage.getItem("JWT_TOKEN");
+            const decoded = jwt_decode(token);
+            user.set(decoded);
+        }
     });
 
     let username;
     user.subscribe(value => {
         if (value != null) {
-            console.log("User: " + JSON.stringify(value));
             username = value['sub'];
         }
     })

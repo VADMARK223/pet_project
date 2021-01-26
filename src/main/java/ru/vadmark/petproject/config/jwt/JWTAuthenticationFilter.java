@@ -53,7 +53,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         ServletResponseUtil.setHeaders(request, response);
 
         if (HttpMethod.OPTIONS.matches(req.getMethod())) {
-            log.info("Skip option for {}.", req.getRequestURI());
             chain.doFilter(request, response);
         } else {
             super.doFilter(request, response, chain);

@@ -39,7 +39,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         ServletResponseUtil.setHeaders(request, response);
 
         final String token = getTokenFromRequest(request);
-        if (token == null) {
+        if (token == null || token.equals("null")) {
             chain.doFilter(request, response);
             return;
         }
@@ -49,8 +49,9 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             log.info("Username from token: {}.", username);
             userDetailsService.authenticationUser(username);
         } catch (JWTVerificationException jwtException) {
-            log.error("Jwt decoder error: {}.", jwtException.getMessage());
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "JWT exception:" + jwtException.getMessage());
+            final String jwtErrorMessage = String.format("Jwt decoder error: '%s'.", jwtException.getMessage());
+            log.warn(jwtErrorMessage);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, jwtErrorMessage);
         } finally {
             chain.doFilter(request, response);
         }

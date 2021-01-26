@@ -1,6 +1,6 @@
 import axios from "axios";
-import {hash} from "./router";
-import {authenticate, user} from "./state";
+// import {hash} from "./router";
+import {user} from "./state";
 import jwt_decode from "jwt-decode";
 
 const axiosAPI = axios.create({
@@ -8,9 +8,10 @@ const axiosAPI = axios.create({
 });
 
 const apiRequest = (method, url, request) => {
+    const token = localStorage.getItem("JWT_TOKEN");
     const headers = {
         'Content-Type': 'application/json',
-        // 'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhIiwiaWQiOjEsImV4cCI6MTYxMjQ3MjQwMH0.00fmyZ2keSjLow47jbtkmTYc8G-sHioi24obOckF-iRgPPdpXqej3jG15B7NJJGcyidv-MMA3gy3ykkmjFWVqg'
+        'Authorization': 'Bearer ' + token
     };
 
     return axiosAPI({
@@ -19,13 +20,11 @@ const apiRequest = (method, url, request) => {
         data: request,
         headers
     }).then(res => {
-        console.log("Auth: " + res.headers.authorization);
         if (res.headers.authorization !== undefined) {
             const token = res.headers.authorization;
             const decoded = jwt_decode(token);
-            console.log(decoded);
-            authenticate.set(true);
             user.set(decoded);
+            localStorage.setItem("JWT_TOKEN", token);
         }
 
         return Promise.resolve(res.data);
@@ -35,7 +34,7 @@ const apiRequest = (method, url, request) => {
             const data = err.response.data;
             if (data !== undefined && data.status === 401) {
                 console.log('Unauthorized error:' + data.message);
-                hash.set("login");
+                // hash.set("login");
             } else {
                 return Promise.reject(err)
             }

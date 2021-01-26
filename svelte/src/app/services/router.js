@@ -9,12 +9,10 @@ function getUrlFromHash() {
 }
 
 function onloadHandler() {
-    console.log("Load handler: " + location.hash);
     hash.set(getUrlFromHash());
 }
 
 function onhashchangeHandler() {
-    console.log("Hash change handler: " + location.hash);
     hash.set(getUrlFromHash());
 }
 

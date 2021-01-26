@@ -1,6 +1,7 @@
 <script>
     import {writable} from "svelte/store";
     import {login} from "../services/auth";
+    import {hash} from "../services/router";
 
     const userForm = writable({});
     let response = {};
@@ -9,6 +10,7 @@
         try {
             response = await login(userForm)
             error = "";
+            hash.set("home");
         } catch (e) {
             error = e.response.data;
         }

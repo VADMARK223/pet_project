@@ -12,7 +12,6 @@
     let value = HomePage;
 
     hash.subscribe(val => {
-        console.log("Hash = " + val);
         switch (val) {
             case '':
             case 'home':

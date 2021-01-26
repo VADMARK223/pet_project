@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -19,8 +19,6 @@ import ru.vadmark.petproject.repository.UserEntityRepository;
 import ru.vadmark.petproject.repository.model.RegistrationForm;
 import ru.vadmark.petproject.service.UserService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,27 +35,14 @@ public class SvelteController {
     private final UserEntityRepository userRepository;
     private final UserService userService;
 
-    @PostMapping("/auth")
-    public ResponseEntity<Boolean> auth(HttpServletRequest request, HttpServletResponse response,
-                                        @RequestHeader(value = "test", required = false) String test,
-                                        @RequestHeader(value = "Authorization", required = false) String authorization,
-                                        @RequestHeader(value = "Content-Type", required = false) String contentType,
-                                        @RequestBody(required = false) Object data) {
-        log.info(">>>>>>>>>>> " + data);
-        log.info("URI: " + request.getRequestURI());
-        log.info("Test header: {}.", test);
-        log.info("Authorization header: {}.", authorization);
-        log.info("ContentType header: {}.", contentType);
+    @GetMapping("/auth")
+    public ResponseEntity<Boolean> auth() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        response.addHeader(AUTHORIZATION, "vad");
-
-        if (authentication instanceof AnonymousAuthenticationToken) {
-            log.info("Is Anonymous.");
-            return ResponseEntity.ok(false);
-        } else {
-            log.info("User authentication!");
+        if (authentication instanceof UsernamePasswordAuthenticationToken && authentication.getPrincipal() instanceof UserEntity) {
             return ResponseEntity.ok(true);
         }
+
+        return ResponseEntity.ok(false);
     }
 
     @GetMapping("/admin")
@@ -74,7 +59,8 @@ public class SvelteController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<String> registration(@RequestBody RegistrationForm registrationForm) throws MethodArgumentNotValidException, NoSuchMethodException {
+    public ResponseEntity<String> registration(@RequestBody RegistrationForm registrationForm) throws
+            MethodArgumentNotValidException, NoSuchMethodException {
         log.info("Registration form: {}.", registrationForm);
 
         String error = userService.registrationUser(registrationForm);
