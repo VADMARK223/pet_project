@@ -30,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user.isEmpty()) {
             throw new UsernameNotFoundException(String.format("User '%s' not found.", username));
         }
-        log.info("Load user by username: '{}'. UserEntity: '{}'.", username, user.get());
+        log.info("UserEntity: '{}'.", username);
 
         return user.get();
     }

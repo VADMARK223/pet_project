@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static ru.vadmark.petproject.config.jwt.JWTUtil.BEARER_;
 
 /**
  * @author Markitanov Vadim
@@ -77,19 +76,13 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         UserEntity userEntity = (UserEntity) authResult.getPrincipal();
-        log.info("Successful authentication for user #{} {}.", userEntity.getId(), userEntity.getUsername());
-
-        String token = JWTUtil.createToken(userEntity);
-        log.info("Token: " + token);
-
-        response.addHeader(AUTHORIZATION, BEARER_ + token);
+        log.info("User {}.", userEntity);
+        response.addHeader(AUTHORIZATION, JWTUtil.createToken(userEntity));
         super.successfulAuthentication(request, response, chain, authResult);
     }
 
     @Override
     protected String obtainUsername(HttpServletRequest request) {
-        log.info("request.getMethod(): {}.", request.getMethod());
-
         if (userForm != null && MediaType.APPLICATION_JSON_VALUE.equals(request.getHeader(HttpHeaders.CONTENT_TYPE))) {
             return userForm.getUsername();
         }
