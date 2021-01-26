@@ -1,7 +1,7 @@
 <script>
     import {writable} from "svelte/store";
     import {login} from "../services/auth";
-    import {hash} from "../services/router";
+    import {redirect} from "../services/router";
 
     const userForm = writable({});
     let response = {};
@@ -11,7 +11,7 @@
         try {
             response = await login(userForm);
             error = "";
-            hash.set("home");
+            redirect("");
         } catch (e) {
             if (e.response !== undefined) {
                 console.log(e.response.data);

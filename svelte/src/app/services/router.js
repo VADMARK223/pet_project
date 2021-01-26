@@ -1,6 +1,7 @@
 import {writable} from "svelte/store";
 
 export const hash = writable('home');
+export const redirect = (newHash) => location.hash = newHash;
 
 function getUrlFromHash() {
     return location.hash.length >= 1
