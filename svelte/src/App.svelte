@@ -9,7 +9,7 @@
     onMount(async () => {
         const result = await auth();
         if (result) {
-            const token = localStorage.getItem("JWT_TOKEN");
+            const token = localStorage.getItem(process.env.JWT_TOKEN);
             const decoded = jwt_decode(token);
             user.set(decoded);
         }
@@ -19,6 +19,8 @@
     user.subscribe(value => {
         if (value != null) {
             username = value['sub'];
+        } else {
+            username = undefined;
         }
     })
 </script>

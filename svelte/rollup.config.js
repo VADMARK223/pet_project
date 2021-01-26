@@ -9,6 +9,7 @@ import replace from "@rollup/plugin-replace";
 const production = !process.env.ROLLUP_WATCH;
 
 const API_BASE_URL = 'http://localhost:8080/svelte';
+const JWT_TOKEN = 'JWT_TOKEN';
 
 function serve() {
     let server;
@@ -76,7 +77,8 @@ export default {
         replace({
             process: JSON.stringify({
                 env: {
-                    API_BASE_URL
+                    API_BASE_URL,
+                    JWT_TOKEN
                 }
             })
         })

@@ -8,7 +8,7 @@ const axiosAPI = axios.create({
 });
 
 const apiRequest = (method, url, request) => {
-    const token = localStorage.getItem("JWT_TOKEN");
+    const token = localStorage.getItem(process.env.JWT_TOKEN);
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + token
@@ -24,7 +24,7 @@ const apiRequest = (method, url, request) => {
             const token = res.headers.authorization;
             const decoded = jwt_decode(token);
             user.set(decoded);
-            localStorage.setItem("JWT_TOKEN", token);
+            localStorage.setItem(process.env.JWT_TOKEN, token);
         }
 
         return Promise.resolve(res.data);
