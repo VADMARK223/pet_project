@@ -1,6 +1,7 @@
 import axios from "axios";
 import {hash} from "./router";
 import {authenticate, user} from "./state";
+import jwt_decode from "jwt-decode";
 
 const axiosAPI = axios.create({
     baseURL: process.env.API_BASE_URL
@@ -18,11 +19,13 @@ const apiRequest = (method, url, request) => {
         data: request,
         headers
     }).then(res => {
-
         console.log("Auth: " + res.headers.authorization);
         if (res.headers.authorization !== undefined) {
+            const token = res.headers.authorization;
+            const decoded = jwt_decode(token);
+            console.log(decoded);
             authenticate.set(true);
-            user.set({username: 'vadmark'});
+            user.set(decoded);
         }
 
         return Promise.resolve(res.data);

@@ -1,16 +1,16 @@
 <script>
     import RouterLink from '../routing/RouterLink.svelte'
-    import {authenticate} from "../services/state";
+    import {user} from "../services/state";
 
-    let authenticateValue;
-    authenticate.subscribe(value => {
-        authenticateValue = value;
-        console.log("Sidenav#value=" + value);
+    let username;
+    user.subscribe(value => {
+        console.log(value);
+        const user = JSON.stringify(value);
+        username = user;
     })
 </script>
 
-Authenticate: {authenticateValue}.<br>
-{#if authenticateValue === true}
+{#if username === true}
     <RouterLink url="logout">Log out</RouterLink><br>
     <RouterLink url="admin">Admin</RouterLink><br>
     <RouterLink url="settings">Settings</RouterLink><br>
