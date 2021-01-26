@@ -44,7 +44,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         final SimpleUrlAuthenticationSuccessHandler authSuccessHandler = new SimpleUrlAuthenticationSuccessHandler("/settings");
         authSuccessHandler.setRedirectStrategy(new CustomRedirectStrategy(properties));
         super.setAuthenticationSuccessHandler(authSuccessHandler);
-        super.setAuthenticationFailureHandler(new AuthFailureHandler());
+
+        final AuthFailureHandler authFailureHandler = new AuthFailureHandler();
+        authFailureHandler.setRedirectStrategy(new CustomRedirectStrategy(properties));
+        super.setAuthenticationFailureHandler(authFailureHandler);
     }
 
     @Override

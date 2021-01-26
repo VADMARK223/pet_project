@@ -6,13 +6,19 @@
     const userForm = writable({});
     let response = {};
     let error = "";
+
     async function handlerOnSubmit() {
         try {
-            response = await login(userForm)
+            response = await login(userForm);
             error = "";
             hash.set("home");
         } catch (e) {
-            error = e.response.data;
+            if (e.response !== undefined) {
+                console.log(e.response.data);
+                error = e.response.data;
+            } else {
+                error = "Unknown error.";
+            }
         }
     }
 </script>
@@ -34,6 +40,7 @@
     .login-error {
         color: red;
     }
+
     .login-content {
         display: grid;
         grid-template-columns: 10% 90%;
