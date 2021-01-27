@@ -1,5 +1,6 @@
 package ru.vadmark.petproject.controller.rest;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import ru.vadmark.petproject.repository.model.RegistrationForm;
 import ru.vadmark.petproject.service.UserService;
 
 import java.security.Principal;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -111,15 +113,16 @@ public class SvelteController {
 
     @PostMapping("/upload")
     public ResponseEntity<String> upload(Principal principal, @RequestBody String imgAsBase64) {
-        log.info("UPLOAD: " + imgAsBase64);
+        final String base64 = "base64,";
+        int base64Index = imgAsBase64.indexOf(base64) + base64.length();
+        String imgAsBase64Cat = imgAsBase64.substring(base64Index);
         if (principal == null) {
             return ResponseEntity.badRequest().body("Unauthorized user.");
         }
         UserEntity userEntity = userService.getUserByUsername(principal.getName());
         if (userEntity != null) {
-//            CommonsMultipartFile commonsMultipartFile = new CommonsMultipartFile(new DiskFileItem());
-//            userEntity.setAvatar(Base64.getDecoder().decode(imgAsBase64.getBytes(StandardCharsets.UTF_8)));
-//            userService.saveUser(userEntity);
+            userEntity.setAvatar(Base64.getMimeDecoder().decode(imgAsBase64Cat));
+            userService.saveUser(userEntity);
         }
 
         return ResponseEntity.ok().build();

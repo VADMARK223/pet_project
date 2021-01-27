@@ -55,7 +55,6 @@ public class SettingsController {
         byte[] rawAvatar = null;
         UserEntity userEntity = userService.getUserByUsername(principal.getName());
         if (userEntity != null) {
-            log.info(">>>>>>>>>>>> : {}.", avatarForm.getImage());
             userEntity.setAvatar(avatarForm.getImage().getBytes());
             userService.saveUser(userEntity);
 

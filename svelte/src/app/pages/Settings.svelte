@@ -24,8 +24,9 @@
     }
 
     async function handlerOnSubmit() {
-        console.log("<<<<<<< " + imageAsBase64)
         let response = upload(imageAsBase64);
+        console.log("resp", response);
+        location.reload();
     }
 </script>
 
