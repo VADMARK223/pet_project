@@ -19,6 +19,7 @@ import ru.vadmark.petproject.repository.UserEntityRepository;
 import ru.vadmark.petproject.repository.model.RegistrationForm;
 import ru.vadmark.petproject.service.UserService;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,7 +99,29 @@ public class SvelteController {
     }
 
     @GetMapping("/settings")
-    public ResponseEntity<String> settings() {
-        return ResponseEntity.ok("Settings");
+    public ResponseEntity<String> settings(Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.badRequest().body("Unauthorized user.");
+        }
+
+        String imgAsBase64 = userService.getAvatarAsBase64ByUsername(principal.getName());
+
+        return ResponseEntity.ok(imgAsBase64);
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<String> upload(Principal principal, @RequestBody String imgAsBase64) {
+        log.info("UPLOAD: " + imgAsBase64);
+        if (principal == null) {
+            return ResponseEntity.badRequest().body("Unauthorized user.");
+        }
+        UserEntity userEntity = userService.getUserByUsername(principal.getName());
+        if (userEntity != null) {
+//            CommonsMultipartFile commonsMultipartFile = new CommonsMultipartFile(new DiskFileItem());
+//            userEntity.setAvatar(Base64.getDecoder().decode(imgAsBase64.getBytes(StandardCharsets.UTF_8)));
+//            userService.saveUser(userEntity);
+        }
+
+        return ResponseEntity.ok().build();
     }
 }

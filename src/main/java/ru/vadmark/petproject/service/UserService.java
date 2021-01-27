@@ -12,6 +12,8 @@ import ru.vadmark.petproject.repository.UserEntityRepository;
 import ru.vadmark.petproject.repository.model.RegistrationForm;
 import ru.vadmark.petproject.repository.model.UserForm;
 
+import java.util.Base64;
+
 /**
  * Author: Markitanov Vadim
  * Date: 27.12.2020
@@ -91,5 +93,17 @@ public class UserService {
         }
 
         return null;
+    }
+
+    public String getAvatarAsBase64ByUsername(String username) {
+        String result = null;
+        byte[] rawAvatar;
+        UserEntity userEntity = this.getUserByUsername(username);
+        if (userEntity != null) {
+            rawAvatar = userEntity.getAvatar();
+            String imgAsBase64 = rawAvatar == null ? "" : new String(Base64.getEncoder().encode(rawAvatar));
+            result = "data:image/jpeg;base64," + imgAsBase64;
+        }
+        return result;
     }
 }

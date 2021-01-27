@@ -2,7 +2,7 @@
 <#include "base.ftl">
 
 <#macro page_head>
-    <title>Upload</title>
+    <title>Settings</title>
 </#macro>
 
 <#macro article>

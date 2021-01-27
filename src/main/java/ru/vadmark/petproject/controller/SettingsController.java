@@ -27,6 +27,7 @@ import java.util.Base64;
 @RequiredArgsConstructor
 @Controller
 public class SettingsController {
+    // TODO: 27.01.2021 Migrate
     @Bean
     public MultipartResolver multipartResolver() {
         CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
@@ -40,16 +41,9 @@ public class SettingsController {
 
     @GetMapping("/settings")
     public ModelAndView settings(Principal principal) {
-        byte[] rawAvatar = null;
-
-        UserEntity userEntity = userService.getUserByUsername(principal.getName());
-        if (userEntity != null) {
-            rawAvatar = userEntity.getAvatar();
-        }
-
-        String imgAsBase64 = rawAvatar == null ? "" : new String(Base64.getEncoder().encode(rawAvatar));
+        String imgAsBase64 = userService.getAvatarAsBase64ByUsername(principal.getName());
         ModelAndView modelAndView = new ModelAndView("settings");
-        modelAndView.addObject("imgAsBase64", "data:image/jpeg;base64," + imgAsBase64);
+        modelAndView.addObject("imgAsBase64", imgAsBase64);
         modelAndView.addObject("avatarForm", new AvatarForm());
         return modelAndView;
     }
@@ -61,6 +55,7 @@ public class SettingsController {
         byte[] rawAvatar = null;
         UserEntity userEntity = userService.getUserByUsername(principal.getName());
         if (userEntity != null) {
+            log.info(">>>>>>>>>>>> : {}.", avatarForm.getImage());
             userEntity.setAvatar(avatarForm.getImage().getBytes());
             userService.saveUser(userEntity);
 

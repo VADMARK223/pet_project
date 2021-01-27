@@ -1,5 +1,4 @@
 import axios from "axios";
-// import {hash} from "./router";
 import {user} from "./state";
 import jwt_decode from "jwt-decode";
 
@@ -30,18 +29,25 @@ const apiRequest = (method, url, request) => {
         return Promise.resolve(res.data);
     })
         .catch(err => {
-            console.log(err.response)
-            const data = err.response.data;
-            if (data !== undefined && data.status === 401) {
-                console.log('Unauthorized error:' + data.message);
-                // hash.set("login");
+            console.log("Error response", err.response);
+
+            if (err.response.status !== null && err.response.status === 400) {
+                console.error('Bad request: ' + err.response.data);
+            } else if (err.response.data !== undefined && err.response.data.status === 401) {
+                console.error('Unauthorized error:' + err.response.data.message);
             } else {
                 return Promise.reject(err)
             }
         });
 }
 
-const post = (url, request) => apiRequest("post", url, request);
+const post = (url, request) => {
+    if (request === undefined) {
+        console.error("Undefined request for url: " + url);
+        return;
+    }
+    return apiRequest("post", url, request);
+}
 const get = (url, request) => apiRequest("get", url, request);
 const del = (url, request) => apiRequest("delete", url, request);
 
