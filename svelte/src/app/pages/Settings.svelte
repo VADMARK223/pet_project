@@ -9,8 +9,6 @@
         imgAsBase64 = await getSettings();
     })
 
-    let imageAsBase64;
-
     function onFileSelected(e) {
         console.log("On file selected.")
         const file = e.target.files[0];
@@ -19,13 +17,12 @@
         let reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = ev => {
-            imageAsBase64 = ev.target.result;
+            imgAsBase64 = ev.target.result;
         }
     }
 
     async function handlerOnSubmit() {
-        let response = upload(imageAsBase64);
-        console.log("resp", response);
+        await upload(imgAsBase64);
         location.reload();
     }
 </script>
