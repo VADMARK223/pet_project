@@ -13,6 +13,7 @@ import ru.vadmark.petproject.repository.model.RegistrationForm;
 import ru.vadmark.petproject.repository.model.UserForm;
 
 import java.util.Base64;
+import java.util.Collections;
 
 /**
  * Author: Markitanov Vadim
@@ -35,16 +36,16 @@ public class UserService {
             return false;
         }
 
-        UserEntity user = new UserEntity();
-        user.setUsername(userForm.getUsername());
-
         RoleEntity roleEntity = roleEntityRepository.findByName(ROLE_USER);
         if (roleEntity == null) {
             log.error("Role '{}' not exists.", ROLE_USER);
             throw new RuntimeException("Role '" + ROLE_USER + "' not found.");
         }
-        user.getRoles().add(roleEntity);
-        user.setPassword(bCryptPasswordEncoder.encode(userForm.getPassword()));
+
+        UserEntity user = new UserEntity()
+                .setUsername(userForm.getUsername())
+                .setPassword(bCryptPasswordEncoder.encode(userForm.getPassword()))
+                .setRoles(Collections.singleton(roleEntity));
         userRepository.save(user);
         log.info("Save user.");
 

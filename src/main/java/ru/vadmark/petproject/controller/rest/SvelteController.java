@@ -1,6 +1,5 @@
 package ru.vadmark.petproject.controller.rest;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -94,10 +93,7 @@ public class SvelteController {
     @GetMapping("/test")
     public ResponseEntity<UserEntity> test(@RequestParam("id") String id) {
         log.info("id: {}.", id);
-        UserEntity userEntity = new UserEntity();
-        userEntity.setId(999L);
-        userEntity.setUsername("Vadim");
-        return ResponseEntity.ok(userEntity);
+        return ResponseEntity.ok(new UserEntity().setId(999L).setUsername("Vadim"));
     }
 
     @GetMapping("/settings")

@@ -24,10 +24,7 @@ public class IdleUserTimeChecker {
     @Scheduled(fixedRate = 1000L)
     public void dropIdleUsersTask() {
 //        log.info("Drop idle user task.");
-        UserEntity userEntity = new UserEntity();
-        userEntity.setId(999L);
-        userEntity.setUsername("Vadmark");
-        eventPublisher.publishEvent(new WebsocketLogoutEvent(userEntity));
+        eventPublisher.publishEvent(new WebsocketLogoutEvent(new UserEntity().setId(999L).setUsername("Vadmark")));
     }
 
     @Bean
