@@ -7,11 +7,14 @@ logging:
     name: log/application.log
 
 spring:
+  flyway:
+    enabled: true
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
     show-sql: false
     open-in-view: false
+    generate-ddl: false
 
   datasource:
     initialization-mode: never
