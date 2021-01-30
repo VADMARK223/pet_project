@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -22,17 +23,17 @@ public class WebSocketHandler extends TextWebSocketHandler implements Applicatio
     private final UserEntityRepository userRepo;
 
     @Override
-    public void onApplicationEvent(WebsocketLogoutEvent event) {
+    public void onApplicationEvent(@NonNull WebsocketLogoutEvent event) {
 //        log.info("Event source: {}.", event.getSource());
     }
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+    public void afterConnectionEstablished(@NonNull WebSocketSession session) {
         log.info("After connection established session: {}.", session);
     }
 
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+    protected void handleTextMessage(@NonNull WebSocketSession session, @NonNull TextMessage message) throws Exception {
         log.info("Handle text message: {}.", message);
         WebSocketMessage webSocketMessage = new ObjectMapper().readValue(message.getPayload(), WebSocketMessage.class);
         log.info("User: {}.", webSocketMessage.getUsername());
@@ -44,7 +45,7 @@ public class WebSocketHandler extends TextWebSocketHandler implements Applicatio
     }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+    public void afterConnectionClosed(@NonNull WebSocketSession session, @NonNull CloseStatus status) {
         log.info("After connection closed: {}.", status);
     }
 }

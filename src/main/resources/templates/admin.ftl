@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="users" type="java.util.List<ru.vadmark.petproject.entity.UserEntity>" -->
 <#include "base.ftl">
 
 <#macro page_head>

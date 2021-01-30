@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="error" type="java.lang.String" -->
 <#include "base.ftl">
 <#-- @ftlvariable name="user" type="ru.vadmark.petproject.entity.UserEntity" -->
 

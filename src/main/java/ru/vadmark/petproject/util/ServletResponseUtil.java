@@ -14,11 +14,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Slf4j
 public class ServletResponseUtil {
-    public static void logHeaders(HttpServletResponse response) {
-        log.info("==============HEADER==============");
-        response.getHeaderNames().forEach(s -> log.info("Header(" + s + "): {}.", response.getHeader(s)));
-    }
-
     public static void setHeaders(ServletRequest request, ServletResponse response) {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
