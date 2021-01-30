@@ -1,3 +1,4 @@
+<#--noinspection HtmlRequiredTitleElement-->
 <#import "/spring.ftl" as spring />
 <#assign sec=JspTaglibs["http://www.springframework.org/security/tags"]/>
 <#macro page_head>
