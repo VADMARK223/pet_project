@@ -6,11 +6,23 @@
 </#macro>
 
 <#macro article>
-    <#list users as user>
-        <form action="/admin/user/${user.id}" method="post">
-            <h2 class="hello-title">User: №${user.id} ${user.username} <input type="submit" value="Remove"></h2>
-        </form>
-    </#list>
+    <table>
+        <tr>
+            <th>№</th>
+            <th>Username</th>
+            <th>Remove</th>
+        </tr>
+        <#list users as user>
+            <form action="/admin/user/${user.id}" method="post">
+                <tr>
+                    <td>${user.id}</td>
+                    <td>${user.username}</td>
+                    <td><input type="submit" value="Remove"></td>
+                </tr>
+            </form>
+        </#list>
+
+    </table>
 </#macro>
 
 <@display_page/>
