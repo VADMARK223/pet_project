@@ -25,8 +25,8 @@
     })
 </script>
 
-<div class="modal fade show" tabindex="-1" id="recordModal" aria-modal="true" role="dialog">
-    <div class="modal-dialog">
+<div class="modal fade show" tabindex="-1" id="recordModal" role="dialog">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Add weight</h4>
@@ -36,7 +36,8 @@
                 <p>Empty body</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>
@@ -44,7 +45,8 @@
 
 <header>
     <h2><a href="/">Svelte</a></h2>
-    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#recordModal">Add weight</button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#recordModal">
+        <span aria-hidden="true">&plus;</span>Add weight</button>
     {#if username}
         <h4>Welcome back, {username}.</h4>
     {/if}
