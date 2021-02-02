@@ -2,6 +2,6 @@
     export let url;
 </script>
 
-<a href="#{url}">
+<a class="nav-link" href="#{url}">
     <slot/>
 </a>

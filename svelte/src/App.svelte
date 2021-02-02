@@ -49,15 +49,14 @@
             <img src="/images/svelte.png" alt="Svelte">Svelte
         </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#dbNavbar" aria-controls="dbNavbar">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#dbNavbar"
+                aria-controls="dbNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="dbNavbar">
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <Sidenav/>
-                </li>
+                <Sidenav/>
             </ul>
             <ul class="navbar-nav ms-md-auto">
                 <li class="nav-item nav-link">

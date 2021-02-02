@@ -31,27 +31,54 @@
         </script>
     </head>
     <body>
-    <header>
-        <h2><a href="/">Freemarker</a></h2>
-        <@sec.authorize access="isAuthenticated()">
-            <h4>Welcome back, <@sec.authentication property="name"/>.</h4>
-        </@sec.authorize>
+
+
+    <header class="navbar navbar-expand-md navbar-dark bg-dark py-0">
+        <nav class="container-xxl flex-wrap flex-md-nowrap" aria-label="Main navigation">
+            <a href="/" class="navbar-brand">
+                <img src="/images/freemarker.png" alt="Freemarker">Freemarker
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#dbNavbar"
+                    aria-controls="dbNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="dbNavbar">
+                <ul class="navbar-nav">
+                    <@sec.authorize access="!isAuthenticated()">
+                        <a class="nav-link" href="/login">Sing in</a>
+                        <a class="nav-link" href="/registration">Registration</a>
+                    </@sec.authorize>
+
+                    <@sec.authorize access="isAuthenticated()">
+                        <a class="nav-link" href="/logout">Log out</a>
+
+                        <@sec.authorize access="hasRole('ADMIN')">
+                            <a class="nav-link" href="/admin">Admin</a>
+                        </@sec.authorize>
+
+                        <a class="nav-link" href="/settings">Settings</a>
+                    </@sec.authorize>
+                </ul>
+                <ul class="navbar-nav ms-md-auto">
+                    <li class="nav-item nav-link">
+                        <@sec.authorize access="isAuthenticated()">
+                            Welcome back, <@sec.authentication property="name"/>.
+                        </@sec.authorize>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#recordModal">
+                            <span aria-hidden="true">&plus;</span>Add weight
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
     </header>
 
-    <nav class="base-nav">
-        <@sec.authorize access="!isAuthenticated()">
-            <a href="/login">Sing in</a><br>
-            <a href="/registration">Registration</a><br>
-        </@sec.authorize>
-        <@sec.authorize access="isAuthenticated()">
-            <a href="/logout">Log out</a><br>
-            <@sec.authorize access="hasRole('ADMIN')">
-                <a href="/admin">Admin</a><br>
-            </@sec.authorize>
-            <a href="/settings">Settings</a><br>
-        </@sec.authorize>
-    </nav>
-    <article class="base-article">
+    <article>
         <@article/>
     </article>
 
