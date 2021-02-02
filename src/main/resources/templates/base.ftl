@@ -18,7 +18,6 @@
         <link rel="stylesheet" href="/css/freemarker.css">
         <link rel="shortcut icon" href="/images/freemarker.ico" type="image/x-icon">
         <script src="/js/axios.min.js"></script>
-        <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script>
             const jwt = localStorage.getItem("BEARER_JWT");
