@@ -11,6 +11,12 @@
     }
 </script>
 
-<form on:submit|preventDefault={submitHandler} method="post">
-    <h2>User: №{id} {username} <input type="submit" value="Remove"/></h2>
-</form>
+<tr>
+    <td>{id}</td>
+    <td>{username}</td>
+    <td>
+        <form on:submit|preventDefault={submitHandler} method="post">
+            <input type="submit" value="Remove"/>
+        </form>
+    </td>
+</tr>

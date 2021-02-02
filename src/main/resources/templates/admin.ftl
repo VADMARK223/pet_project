@@ -6,12 +6,15 @@
 </#macro>
 
 <#macro article>
-    <table>
+    <table class="table">
+        <thead>
         <tr>
-            <th>№</th>
-            <th>Username</th>
-            <th>Remove</th>
+            <th scope="col">#</th>
+            <th scope="col">Username</th>
+            <th scope="col">Action</th>
         </tr>
+        </thead>
+        <tbody>
         <#list users as user>
             <form action="/admin/user/${user.id}" method="post">
                 <tr>
@@ -21,7 +24,7 @@
                 </tr>
             </form>
         </#list>
-
+        </tbody>
     </table>
 </#macro>
 

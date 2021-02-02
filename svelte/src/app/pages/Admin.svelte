@@ -9,6 +9,17 @@
     })
 </script>
 
-{#each users as user}
-    <User id="{user.id}" username="{user.username}"/>
-{/each}
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Username</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {#each users as user}
+            <User id="{user.id}" username="{user.username}"/>
+        {/each}
+    </tbody>
+</table>

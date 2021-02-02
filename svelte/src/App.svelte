@@ -25,11 +25,11 @@
     })
 </script>
 
-<div class="modal fade show" tabindex="-1" id="recordModal" role="dialog">
+<div class="modal fade show" tabindex="-1" id="recordModal" aria-labelledby="titleRecordModal" aria-modal="true" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Add weight</h4>
+                <h4 class="modal-title" id="titleRecordModal">Add weight</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
