@@ -4,6 +4,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,13 +16,12 @@ import ru.vadmark.petproject.entity.UserEntity;
 import ru.vadmark.petproject.repository.UserEntityRepository;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Author: Markitanov Vadim
- * Date: 04.01.2021
+ * @author Markitanov Vadim
+ * @since 04.01.2021
  */
 @Api(tags = "Admin")
 @RequestMapping("/admin")
@@ -33,7 +34,16 @@ public class AdminController {
     @ApiOperation(notes = "Find all user in DB and return admin page.", value = "Get users list.")
     @GetMapping()
     public ModelAndView admin() {
-        return new ModelAndView("admin", Collections.singletonMap("users", userRepository.findAll()));
+        return createAdminModelAndView(userRepository.findAll());
+    }
+
+    private ModelAndView createAdminModelAndView(List<UserEntity> users) {
+        final ModelAndView result = new ModelAndView("admin");
+        result.addObject("users", users);
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity userEntity = (UserEntity) authentication.getPrincipal();
+        result.addObject("username", userEntity.getUsername());
+        return result;
     }
 
     @ApiOperation("Get user by id.")
@@ -42,7 +52,7 @@ public class AdminController {
         Optional<UserEntity> optionalUser = userRepository.findById(id);
         List<UserEntity> users = new ArrayList<>();
         optionalUser.ifPresent(users::add);
-        return new ModelAndView("admin", Collections.singletonMap("users", users));
+        return createAdminModelAndView(users);
     }
 
     @ApiOperation("Delete user by id.")

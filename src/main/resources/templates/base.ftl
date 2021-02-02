@@ -82,7 +82,7 @@
                 <ul class="navbar-nav ms-md-auto">
                     <li class="nav-item nav-link">
                         <@sec.authorize access="isAuthenticated()">
-                            Welcome back, <@sec.authentication property="name"/>.
+                            Welcome back, <@sec.authentication property="principal.username"/>.
                         </@sec.authorize>
                     </li>
                     <li class="nav-item">

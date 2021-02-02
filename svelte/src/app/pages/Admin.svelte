@@ -6,10 +6,10 @@
     let users = "";
     onMount(async () => {
         users = await getUserList();
-    })
+    });
 </script>
 
-<table class="table">
+<table class="table table-dark table-striped">
     <thead>
         <tr>
             <th scope="col">#</th>
