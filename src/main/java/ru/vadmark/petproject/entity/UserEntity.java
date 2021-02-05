@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 @Data
 @Entity
 @Table(name = "users")
-public class UserEntity implements UserDetails {
+public class UserEntity extends RepresentationModel<UserEntity> implements UserDetails{
     @ApiModelProperty("Role ID.")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

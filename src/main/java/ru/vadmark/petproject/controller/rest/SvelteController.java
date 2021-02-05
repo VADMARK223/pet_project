@@ -23,10 +23,14 @@ import java.security.Principal;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
- * Author: Markitanov Vadim
- * Date: 07.01.2021
+ * @author : Markitanov Vadim
+ * @since : 07.01.2021
  */
 @Api(tags = "Svelte")
 @RequiredArgsConstructor
@@ -47,10 +51,33 @@ public class SvelteController {
         return ResponseEntity.ok(false);
     }
 
-    @GetMapping("/admin")
-    public List<UserEntity> admin() {
-        log.info("Get admin");
-        return userRepository.findAll();
+    @GetMapping("/users")
+    public ResponseEntity<List<UserEntity>> users() {
+        log.info("Get users.");
+        return ResponseEntity.ok(userRepository
+                .findAll()
+                .parallelStream()
+                .peek(userEntity -> userEntity
+                        .add(
+                                linkTo(
+                                        methodOn(SvelteController.class)
+                                                .getUser(userEntity.getId()))
+                                        .withSelfRel()
+                        )
+                )
+                .collect(Collectors.toList()));
+    }
+
+    @GetMapping("/users/{id}")
+    public ResponseEntity<UserEntity> getUser(@PathVariable long id) {
+        log.info("Get user({}).", id);
+        Optional<UserEntity> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            UserEntity userEntity = optionalUser.get();
+            userEntity.add(linkTo(methodOn(SvelteController.class).getUser(userEntity.getId())).withSelfRel());
+            return ResponseEntity.ok(userEntity);
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @DeleteMapping("/admin/user/{id}")
@@ -58,6 +85,13 @@ public class SvelteController {
         log.info("Delete user: {}.", id);
         Optional<UserEntity> optionalUser = userRepository.findById(id);
         optionalUser.ifPresent(userRepository::delete);
+    }
+
+    @Deprecated
+    @GetMapping("/admin")
+    public List<UserEntity> admin() {
+        log.info("Get admin");
+        return userRepository.findAll();
     }
 
     @PostMapping("/registration")
