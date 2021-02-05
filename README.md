@@ -7,6 +7,7 @@
 * Security - starter for using Spring Security.
 * Validation - starter for using Java Bean Validation with Hibernate Validator.
 * WebSocket - starter for building WebSocket applications using Spring Framework's WebSocket support.
+* HATEOAS - starter for building hypermedia-based RESTful web application with Spring MVC and Spring HATEOAS.
 
 ## Auth0
 
