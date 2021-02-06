@@ -10,7 +10,6 @@
     async function handlerOnSubmit() {
         try {
             response = await login(userForm);
-            error = "";
             redirect("");
         } catch (e) {
             if (e.response !== undefined) {

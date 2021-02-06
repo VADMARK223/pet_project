@@ -30,13 +30,15 @@ const apiRequest = (method, url, request) => {
     })
         .catch(err => {
             console.log("Error response", err.response);
+            const status = err.response.status;
 
-            if (err.response.status !== null && err.response.status === 400) {
+            if (status !== null && status === 400) {
                 console.error('Bad request: ' + err.response.data);
+                return Promise.reject(err);
             } else if (err.response.data !== undefined && err.response.data.status === 401) {
                 console.error('Unauthorized error:' + err.response.data.message);
             } else {
-                return Promise.reject(err)
+                return Promise.reject(err);
             }
         });
 }

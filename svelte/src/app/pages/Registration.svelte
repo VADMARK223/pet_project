@@ -1,5 +1,5 @@
 <script>
-    import {hash} from '../services/router';
+    import {redirect} from '../services/router';
     import {writable} from "svelte/store";
     import {registration} from "../services/auth";
 
@@ -9,8 +9,7 @@
     async function handlerOnSubmit() {
         try {
             response = await registration(registrationForm)
-            error = "";
-            hash.set("home");
+            redirect("");
         } catch (e) {
             error = e.response.data;
         }

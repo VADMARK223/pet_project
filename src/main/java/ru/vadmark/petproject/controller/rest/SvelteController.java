@@ -3,15 +3,12 @@ package ru.vadmark.petproject.controller.rest;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import ru.vadmark.petproject.entity.UserEntity;
@@ -45,9 +42,11 @@ public class SvelteController {
     public ResponseEntity<Boolean> auth() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof UsernamePasswordAuthenticationToken && authentication.getPrincipal() instanceof UserEntity) {
+            log.info("User auth.");
             return ResponseEntity.ok(true);
         }
 
+        log.info("User not auth.");
         return ResponseEntity.ok(false);
     }
 
@@ -95,20 +94,15 @@ public class SvelteController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<String> registration(@RequestBody RegistrationForm registrationForm) throws
-            MethodArgumentNotValidException, NoSuchMethodException {
+    public ResponseEntity<String> registration(@RequestBody RegistrationForm registrationForm) {
         log.info("Registration form: {}.", registrationForm);
 
         String error = userService.registrationUser(registrationForm);
         if (error != null) {
-            final MethodParameter methodParameter = new MethodParameter(RegistrationForm.class.getMethod("getConfirmPassword"), -1);
-            final BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(registrationForm, "registrationForm");
-            ObjectError objectError = new ObjectError("registrationForm", error);
-            bindingResult.addError(objectError);
-            throw new MethodArgumentNotValidException(methodParameter, bindingResult);
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        } else {
+            return ResponseEntity.ok().build();
         }
-        error = userService.registrationUser(registrationForm);
-        return ResponseEntity.ok(error);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
