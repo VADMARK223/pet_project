@@ -6,6 +6,7 @@
     const registrationForm = writable({});
     let response = {};
     let error = "";
+
     async function handlerOnSubmit() {
         try {
             response = await registration(registrationForm)
@@ -18,18 +19,14 @@
 
 <p class="registration-error">{error}</p>
 <form class="registration-content" on:submit|preventDefault={handlerOnSubmit}>
-    <label>Username:</label>
-    <label>
-        <input type="text" bind:value={registrationForm.username}>
-    </label>
-    <label>Password:</label>
-    <label>
-        <input type="password" bind:value={registrationForm.password}>
-    </label>
-    <label>Password confirmation:</label>
-    <label>
-        <input type="password" bind:value={registrationForm.confirmPassword}>
-    </label>
+    <label for="username">Username:</label>
+    <input id="username" type="text" bind:value={registrationForm.username}>
+
+    <label for="password">Password:</label>
+    <input id="password" type="password" bind:value={registrationForm.password}>
+
+    <label for="confirmPassword">Password confirmation:</label>
+    <input id="confirmPassword" type="password" bind:value={registrationForm.confirmPassword}>
     <button type="submit">Sign in</button>
 </form>
 
@@ -37,6 +34,7 @@
     .registration-error {
         color: red;
     }
+
     .registration-content {
         display: grid;
         grid-template-columns: 10% 90%;

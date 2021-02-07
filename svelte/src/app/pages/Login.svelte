@@ -24,14 +24,11 @@
 
 <p class="login-error">{error}</p>
 <form class="login-content" on:submit|preventDefault={handlerOnSubmit}>
-    <label>Username:</label>
-    <label>
-        <input type="text" bind:value={userForm.username}>
-    </label>
-    <label>Password:</label>
-    <label>
-        <input type="password" bind:value={userForm.password}>
-    </label>
+    <label for="username">Username:</label>
+    <input id="username" type="text" bind:value={userForm.username}>
+
+    <label for="password">Password:</label>
+    <input id="password" type="password" bind:value={userForm.password}>
     <button type="submit">Sign in</button>
 </form>
 
